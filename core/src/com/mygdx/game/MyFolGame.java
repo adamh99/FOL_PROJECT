@@ -1,22 +1,25 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
+import com.mygdx.game.Screens.TitleScreen;
+import com.mygdx.game.Settings.AssetManager;
 
 public class MyFolGame extends Game {
 
+	@Override
 	public void create() {
-
-		new TitleScreen(this);
+		AssetManager.load();
+		setScreen(new TitleScreen(this));
 	}
 
 
-
+	@Override
 	public void render() {
 		super.render();
-		//important
+
 	}
 
+	@Override
 	public void dispose() {
 
 	}
