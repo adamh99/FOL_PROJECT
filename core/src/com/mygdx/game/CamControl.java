@@ -25,6 +25,12 @@ public class CamControl implements InputProcessor {
 	private int SHIFT = Keys.SHIFT_LEFT;
 	private int NEXT_MODEL = Keys.N;
 	private int PLACE_MODEL = Keys.ENTER;
+	private int MODEL_FORWARD = Keys.I;
+	private int MODEL_LEFT = Keys.J;
+	private int MODEL_RIGHT = Keys.L;
+	private int MODEL_BACK = Keys.K;
+	private int MODEL_UP = Keys.O;
+	private int MODEL_DOWN =Keys.U;
 
 	private float velocity = 5;
 	private float degreesPerPixel = 0.5f;
@@ -155,26 +161,26 @@ public class CamControl implements InputProcessor {
 			MapBuilder.place_model();
 			keys.remove(PLACE_MODEL, 0);
 		}
-		if (keys.containsKey(Keys.J)) {
+		if (keys.containsKey(MODEL_LEFT)) {
 			MapBuilder.incrementPosition(2, 0, 0);
 			keys.remove(Keys.J, 0);
 		}
-		if (keys.containsKey(Keys.L)) {
+		if (keys.containsKey(MODEL_RIGHT)) {
 			MapBuilder.incrementPosition(-2, 0, 0);
 			keys.remove(Keys.L, 0);
 		}
-		if (keys.containsKey(Keys.I)) {
+		if (keys.containsKey(MODEL_FORWARD)) {
 			MapBuilder.incrementPosition(0, 0, 2);
 			keys.remove(Keys.I, 0);
 		}
-		if (keys.containsKey(Keys.K)) {
+		if (keys.containsKey(MODEL_BACK)) {
 			MapBuilder.incrementPosition(0, 0, -2);
 			keys.remove(Keys.K, 0);
 		}
-		if (keys.containsKey(Keys.O)) {
+		if (keys.containsKey(MODEL_UP)) {
 			MapBuilder.incrementPosition(0, 1, 0);
 			keys.remove(Keys.O, 0);
-		} if (keys.containsKey(Keys.U)) {
+		} if (keys.containsKey(MODEL_DOWN)) {
 			MapBuilder.incrementPosition(0, -1, 0);
 			keys.remove(Keys.U, 0);
 		}
