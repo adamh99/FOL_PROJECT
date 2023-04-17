@@ -42,8 +42,13 @@ public class UIFactory {
 
     private TextField username_field,email_field,password_field,password_confirmation_field;
     private TextButton register_button,return_button;
+    private Actor bckgrndTouchCatcher;
     public Stage getRegisterMenu(){
         stage = new Stage();
+
+        Gdx.input.setInputProcessor(stage);
+        bckgrndTouchCatcher = new Actor();
+        bckgrndTouchCatcher.setBounds(0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         register_button = new TextButton("Register", AssetManager.skin);
         register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         register_button.setPosition(Gdx.graphics.getWidth()*0.5f-(register_button.getWidth()),Gdx.graphics.getHeight()*0.2f);
@@ -77,6 +82,7 @@ public class UIFactory {
         return_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
         //afegir actors
+        stage.addActor(bckgrndTouchCatcher);
         stage.addActor(return_button);
         stage.addActor(register_button);
         stage.addActor(username_field);
@@ -84,6 +90,12 @@ public class UIFactory {
         stage.addActor(password_field);
         stage.addActor(password_confirmation_field);
 
+        bckgrndTouchCatcher.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stage.setKeyboardFocus(null);
+            }
+        } );
         return_button.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

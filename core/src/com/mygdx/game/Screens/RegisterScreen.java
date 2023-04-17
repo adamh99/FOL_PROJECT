@@ -23,16 +23,10 @@ public class RegisterScreen implements Screen {
 
     public RegisterScreen(MyFolGame game) {
         this.game = game;
-        stage = new Stage(new ScreenViewport());
+
         Gdx.input.setInputProcessor(stage);
-        bckgrndTouchCatcher = new Actor();
-        bckgrndTouchCatcher.setBounds(0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        bckgrndTouchCatcher.addListener( new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                stage.setKeyboardFocus(null);
-            }
-        } );
+
+
 
         stage = new UIFactory(game).getRegisterMenu();
 
