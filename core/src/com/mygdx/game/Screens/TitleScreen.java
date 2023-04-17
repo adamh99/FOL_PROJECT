@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.GameScreen;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Settings.AssetManager;
 
@@ -50,6 +51,12 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         play_button = new TextButton("PLAY", AssetManager.skin);
         play_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         play_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f);
+        play_button.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.setScreen(new GameScreen());
+            }
+        } );
 
         //afegir actorsº
         stage.addActor(userNameLabel);
