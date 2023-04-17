@@ -1,8 +1,12 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,48 +24,59 @@ public class RegisterScreen implements Screen {
         Game = game;
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        bckgrndTouchCatcher = new Actor();
+        bckgrndTouchCatcher.setBounds(0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        bckgrndTouchCatcher.addListener( new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stage.setKeyboardFocus(null);
+            }
+        } );
+
+
         buildRegisterTable();
     }
 
-    private String username,password,passwordC,email;
-
     private TextField username_field,email_field,password_field,password_confirmation_field;
     private TextButton register_button,return_button;
+    Actor bckgrndTouchCatcher;
     private void buildRegisterTable() {
-
-        username_field = new TextField("",AssetManager.skin);
-        username_field.setMessageText("Username");
-        username_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.05f);
-        username_field.setPosition(Gdx.graphics.getWidth()*0.125f,Gdx.graphics.getHeight()*0.3f);
-
-        email_field = new TextField("",AssetManager.skin);
-        email_field.setMessageText("Email");
-        email_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.05f);
-        email_field.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.4f);
-
-        password_field = new TextField("",AssetManager.skin);
-        password_field.setMessageText("Password");
-        password_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.05f);
-        password_field.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.4f);
-        password_field.setPasswordMode(true);
-        password_field.setPasswordCharacter('*');
-
-        password_confirmation_field = new TextField("",AssetManager.skin);
-        password_confirmation_field.setMessageText("Confirm your password");
-        password_confirmation_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.05f);
-        password_confirmation_field.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.3f);
-        password_confirmation_field.setPasswordMode(true);
-        password_confirmation_field.setPasswordCharacter('*');
 
         register_button = new TextButton("Register", AssetManager.skin);
         register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
-        register_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.25f);
+        register_button.setPosition(Gdx.graphics.getWidth()*0.5f-(register_button.getWidth()),Gdx.graphics.getHeight()*0.2f);
+
+        password_confirmation_field = new TextField("",AssetManager.skin);
+        password_confirmation_field.setMessageText("Confirm your password");
+        password_confirmation_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
+        password_confirmation_field.setPosition(register_button.getX(), register_button.getY()+password_confirmation_field.getHeight());
+        password_confirmation_field.setPasswordMode(true);
+        password_confirmation_field.setPasswordCharacter('*');
+
+        password_field = new TextField("",AssetManager.skin);
+        password_field.setMessageText("Password");
+        password_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
+        password_field.setPosition(register_button.getX(),password_confirmation_field.getY()+password_field.getHeight());
+        password_field.setPasswordMode(true);
+        password_field.setPasswordCharacter('*');
+
+
+        email_field = new TextField("",AssetManager.skin);
+        email_field.setMessageText("Email");
+        email_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
+        email_field.setPosition(register_button.getX(),password_field.getY()+email_field.getHeight());
+
+        username_field = new TextField("",AssetManager.skin);
+        username_field.setMessageText("Username");
+        username_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
+        username_field.setPosition(register_button.getX(), email_field.getY()+ username_field.getHeight());
 
         return_button = new TextButton("Home", AssetManager.skin);
         return_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         return_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
         //afegir actors
+        stage.addActor(bckgrndTouchCatcher);
         stage.addActor(return_button);
         stage.addActor(register_button);
         stage.addActor(username_field);
@@ -82,7 +97,6 @@ public class RegisterScreen implements Screen {
     public void show() {
 
     }
-
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);

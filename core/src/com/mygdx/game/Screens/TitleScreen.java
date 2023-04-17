@@ -51,7 +51,7 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         play_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         play_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f);
 
-        //afegir actors
+        //afegir actorsº
         stage.addActor(userNameLabel);
         stage.addActor(login_button);
         stage.addActor(register_button);
