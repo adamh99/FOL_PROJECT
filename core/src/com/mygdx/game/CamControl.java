@@ -15,7 +15,6 @@ import java.io.IOException;
 public class CamControl implements InputProcessor {
 	private final Camera camera;
 	private final IntIntMap keys = new IntIntMap();
-
 	private int STRAFE_LEFT = Keys.A;
 	private int STRAFE_RIGHT = Keys.D;
 	private int FORWARD = Keys.W;

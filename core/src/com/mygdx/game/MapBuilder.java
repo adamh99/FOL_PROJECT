@@ -30,7 +30,6 @@ public class MapBuilder {
 	static int categoryIterator;
 	static MapObject placedModel;
 	static Stack<MapObject> history;
-	
 	static ArrayList<MapObject> floors;
 	static String[] floorFiles = {"cobble_floor.g3db"};
 	static String floorPath = "floors/";

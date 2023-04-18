@@ -17,16 +17,16 @@ import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Settings.AssetManager;
 import com.mygdx.game.Settings.UIFactory;
 
-public class RegisterScreen implements Screen {
+public class LoginScreen implements Screen {
     private MyFolGame game;
     private Stage stage;
 
-    public RegisterScreen(MyFolGame game) {
+    public LoginScreen(MyFolGame game) {
         this.game = game;
 
         Gdx.input.setInputProcessor(stage);
 
-        stage = new UIFactory(game).getRegisterMenu();
+        stage = new UIFactory(game).getLoginMenu();
 
     }
 
