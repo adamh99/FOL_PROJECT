@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.google.gson.JsonObject;
 import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Screens.TitleScreen;
@@ -27,7 +28,10 @@ public class UIFactory {
     MyFolGame game;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL="http://192.168.205.245:3007";
+    //private String BASE_URL="http://192.168.205.245:3007";
+    private JsonObject respuesta;
+    String BASE_URL = "http://localhost:3012";
+
 
     private String nomUsuari;
 
@@ -76,48 +80,6 @@ public class UIFactory {
         register_button = new TextButton("Register", AssetManager.skin);
         register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         register_button.setPosition(center-(register_button.getWidth()/2),Gdx.graphics.getHeight()*0.2f);
-        register_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                // Handle login button click
-                String username = username_field.getText();
-                String password = password_field.getText();
-                // Do something with the email and password
-
-                HashMap<String,String> map=new HashMap<>();
-
-                map.put("name",username);
-                map.put("password",password);
-
-                Call<Void> call = retrofitInterface.executeSignup(map);
-
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        //okey
-                        System.out.println("ha respondido");
-                        if (response.code()==400){
-                            registrat=true;
-                            System.out.println("suuuuuuuuuuuuuuuuuuuuuuuu");
-
-                            //error
-                        } else if (response.code() == 200) {
-                            username_field.setText("El usuario ya existe");
-                            password_field.setText("El usuario ya existe");
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
-
-
-
-            }
-        });
 
         password_confirmation_field = new TextField("",AssetManager.skin);
         password_confirmation_field.setMessageText("Confirm your password");
@@ -168,6 +130,48 @@ public class UIFactory {
                 game.setScreen(new TitleScreen(game));
             }
         } );
+        register_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Handle login button click
+                String username = username_field.getText();
+                String email = email_field.getText();
+                String password = password_field.getText();
+                // Do something with the email and password
+
+                HashMap<String,String> map=new HashMap<>();
+
+                map.put("name",username);
+                map.put("email",email);
+                map.put("password",password);
+
+                Call<Void> call = retrofitInterface.executeSignup(map);
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        //okey
+                        //System.out.println("ha respondido");
+                        if (response.code()==200){
+                            registrat=true;
+                            System.out.println("suuuuuuuuuuuuuuuuuuuuuuuu");
+
+                        } else if (response.code() == 400) {
+                            System.out.println("ERROR :"+response.body());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+
+
+            }
+        });
         return stage;
     }
     public Stage getLoginMenu(){

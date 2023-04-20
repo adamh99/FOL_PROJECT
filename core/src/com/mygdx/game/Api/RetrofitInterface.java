@@ -1,5 +1,7 @@
 package com.mygdx.game.Api;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -12,7 +14,7 @@ public interface RetrofitInterface {
     Call<LoginResult> executeLogin(@Body HashMap<String, String> map);
 
     @POST("/registerUserAndroid")
-    Call<Void> executeSignup(@Body HashMap<String, String> map);
+    Call<JsonObject> executeSignup(@Body HashMap<String, String> map);
 
     @POST("/getSettingsPost")
     Call<SettingsResult> getGameSettings(@Body HashMap<String, String> map);
