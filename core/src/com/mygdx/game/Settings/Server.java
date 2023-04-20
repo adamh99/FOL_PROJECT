@@ -13,7 +13,7 @@ public class Server {
     public static int sendHttpRequestAndroidRegister(String name,String pwd,String email) {
         //String url = "http://192.168.207.59:7151/registerUserAndroid/"+name+"/"+pwd+"/"+email;
 
-        String url = "http://localhost:3007/registerUserAndroid/"+name+"/"+pwd+"/"+email;
+        String url = "http://localhost:3007/registerUserAndroid";
        // System.out.println(url);
         Net.HttpRequest httpRequest = new Net.HttpRequest(Net.HttpMethods.GET);
         httpRequest.setUrl(url);
