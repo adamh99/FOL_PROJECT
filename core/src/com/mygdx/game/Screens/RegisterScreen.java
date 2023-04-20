@@ -74,6 +74,6 @@ public class RegisterScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        dispose();
     }
 }
