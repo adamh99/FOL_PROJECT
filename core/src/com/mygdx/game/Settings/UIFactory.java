@@ -10,16 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Screens.TitleScreen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UIFactory {
     MyFolGame game;
+    private RetrofitInterface retrofitInterface;
+    private String BASE_URL="http://localhost:3000";
     public UIFactory(MyFolGame game){
         this.game = game;
-
 
     }
     private static Stage stage;
@@ -159,12 +166,47 @@ public class UIFactory {
                 stage.setKeyboardFocus(null);
             }
         } );
-        return_button.addListener( new ClickListener() {
+        return_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new TitleScreen(game));
+                // Handle login button click
+                String email = username_field.getText();
+                String password = password_field.getText();
+                // Do something with the email and password
+
+                HashMap<String,String> map=new HashMap<>();
+
+                map.put("name",email);
+                //map.put("email",emailEdit.getText().toString());
+                map.put("password",password);
+
+                Call<Void> call = retrofitInterface.executeSignup(map);
+
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        //okey
+                        if (response.code()==200){
+                            registrat=true;
+
+                            //error
+                        } else if (response.code() == 400) {
+                            nameField.setText("El usuario ya existe");
+                            passwordField.setText("El usuario ya existe");
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+
+
             }
-        } );
+        });
         return stage;
     }
 
