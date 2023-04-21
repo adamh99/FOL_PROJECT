@@ -27,7 +27,7 @@ public class UIFactory {
     MyFolGame game;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL="http://192.168.205.245:3007";
+    private String BASE_URL="http://192.168.205.245:3012";
 
     private String nomUsuari;
 
@@ -90,20 +90,28 @@ public class UIFactory {
                 map.put("password",password);
 
                 Call<Void> call = retrofitInterface.executeSignup(map);
-
+                System.out.println("llamando");
                 call.enqueue(new Callback<Void>() {
+
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         //okey
                         System.out.println("ha respondido");
-                        if (response.code()==400){
+                        //Quan et logueges correctament
+                        if (response.code()==201){
                             registrat=true;
-                            System.out.println("suuuuuuuuuuuuuuuuuuuuuuuu");
 
                             //error
-                        } else if (response.code() == 200) {
-                            username_field.setText("El usuario ya existe");
+                        }  else if (response.code() == 452) {
+                            username_field.setText("User min 6 chars, max 16 chars, letras y num");
+
+                        } else if (response.code() == 453) {
+                            password_field.setText("Pass min 6 chars, letras y num");
+                            password_confirmation_field.setText("Pass min 6 chars, letras y num");
+                        } else if (response.code() == 454) {
+                            username_field.setText("user regex fail");
                             password_field.setText("El usuario ya existe");
+                            password_confirmation_field.setText("El usuario ya existe");
                         }
 
                     }
@@ -181,13 +189,50 @@ public class UIFactory {
         login_button = new TextButton("Login", AssetManager.skin);
         login_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         login_button.setPosition(center-(login_button.getWidth()/2),Gdx.graphics.getHeight()*0.2f);
+        login_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Handle login button click
+                String username = username_field.getText();
+                String password = password_field.getText();
+                // Do something with the email and password
 
-        /*password_confirmation_field = new TextField("",AssetManager.skin);
-        password_confirmation_field.setMessageText("Confirm your password");
-        password_confirmation_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
-        password_confirmation_field.setPosition(center-(password_confirmation_field.getWidth()/2), register_button.getY()+password_confirmation_field.getHeight());
-        password_confirmation_field.setPasswordMode(true);
-        password_confirmation_field.setPasswordCharacter('*');*/
+                HashMap<String,String> map=new HashMap<>();
+
+                map.put("name",username);
+                map.put("password",password);
+
+                Call<Void> call = retrofitInterface.executeSignup(map);
+                System.out.println("llamando");
+                call.enqueue(new Callback<Void>() {
+
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        //okey
+                        System.out.println("ha respondido");
+                        //Quan et logueges correctament
+                        if (response.code()==202){
+                            logueado=true;
+                            username_field.setText("okey");
+                            //error
+                        }  else if (response.code() == 402) {
+                            username_field.setText("User/Pass incorrecte");
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+
+
+            }
+        });
+
 
         password_field = new TextField("",AssetManager.skin);
         password_field.setMessageText("Password");
