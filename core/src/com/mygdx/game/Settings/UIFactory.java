@@ -81,12 +81,14 @@ public class UIFactory {
             public void clicked(InputEvent event, float x, float y) {
                 // Handle login button click
                 String username = username_field.getText();
+                String email = email_field.getText();
                 String password = password_field.getText();
                 // Do something with the email and password
 
                 HashMap<String,String> map=new HashMap<>();
 
                 map.put("name",username);
+                map.put("email",email);
                 map.put("password",password);
 
                 Call<Void> call = retrofitInterface.executeSignup(map);
@@ -96,7 +98,7 @@ public class UIFactory {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         //okey
-                        System.out.println("ha respondido");
+                        System.out.println("ha respondido "+response.code());
                         //Quan et logueges correctament
                         if (response.code()==201){
                             registrat=true;
