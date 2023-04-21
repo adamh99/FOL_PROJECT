@@ -2,6 +2,7 @@ package com.mygdx.game.Settings;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -204,7 +205,7 @@ public class UIFactory {
                 map.put("name",username);
                 map.put("password",password);
 
-                Call<Void> call = retrofitInterface.executeSignup(map);
+                Call<Void> call = retrofitInterface.executeLogin(map);
                 System.out.println("llamando");
                 call.enqueue(new Callback<Void>() {
 
@@ -212,13 +213,14 @@ public class UIFactory {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         //okey
                         System.out.println("ha respondido");
+                        System.out.println(response.code());
                         //Quan et logueges correctament
                         if (response.code()==202){
                             logueado=true;
-                            username_field.setText("okey");
+                            username_field.setColor(Color.RED);
                             //error
-                        }  else if (response.code() == 402) {
-                            username_field.setText("User/Pass incorrecte");
+                        }  else if (response.code() == 401) {
+                            username_field.setColor(Color.RED);
 
                         }
 
