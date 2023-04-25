@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -80,7 +81,12 @@ public class GameScreen implements Screen {
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.01f, 0.01f, 0.01f, 1f));
 		
 		environment.add(new PointLight().set(1f,0.6f,0.1f,-3f,8f,9f,70f));
-		
+
+		//chapuza
+		AssetManager assets = new AssetManager();
+		assets.load("first_floor.g3db",Model.class);
+		assets.finishLoading();
+		instances.add(new MapObject("first_floor.g3db",assets.<Model>get("first_floor.g3db")));
 		
 		MapBuilder.init(); //loads assets
 		
