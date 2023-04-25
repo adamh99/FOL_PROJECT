@@ -1,6 +1,5 @@
 package com.mygdx.game.Settings;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.MyFolGame;
@@ -28,10 +27,9 @@ public class UIFactory {
     MyFolGame game;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL="http://192.168.205.245:3012";
+    private String BASE_URL="http://localhost:3012";
 
     private String nomUsuari;
-
 
     private boolean logueado=false;
     private boolean registrat=false;
