@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Message;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Settings.AssetManager;
 import com.mygdx.game.Settings.UIFactory;
@@ -25,7 +26,7 @@ public class LoginScreen implements Screen {
         this.game = game;
 
         Gdx.input.setInputProcessor(stage);
-
+        Message.show("aaaaaaaaaaaaaaaa");
         stage = new UIFactory(game).getLoginMenu();
 
     }
@@ -50,6 +51,8 @@ public class LoginScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
+        Message.stage.draw();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.mygdx.game.Settings;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,17 +13,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Api.RetrofitInterface;
+import com.mygdx.game.Message;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Screens.TitleScreen;
+
+
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jdk.nashorn.internal.runtime.GlobalFunctions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import sun.java2d.opengl.WGLSurfaceData;
 
 public class UIFactory {
     MyFolGame game;
@@ -99,22 +106,64 @@ public class UIFactory {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         //okey
+
                         System.out.println("ha respondido "+response.code());
+
                         //Quan et logueges correctament
                         if (response.code()==201){
                             registrat=true;
 
+
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("Registrado correctamente");
+                                }
+                            });
                             //error
                         }  else if (response.code() == 452) {
-                            username_field.setText("User min 6 chars, max 16 chars, letras y num");
+
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("mail regex fail");
+                                    System.out.println("aaaaaaaaaaaaaaaaaaaaaa");
+                                }
+                            });
+
 
                         } else if (response.code() == 453) {
-                            password_field.setText("Pass min 6 chars, letras y num");
-                            password_confirmation_field.setText("Pass min 6 chars, letras y num");
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("pass regex fail");
+                                }
+                            });
+
                         } else if (response.code() == 454) {
-                            username_field.setText("user regex fail");
-                            password_field.setText("El usuario ya existe");
-                            password_confirmation_field.setText("El usuario ya existe");
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("user regex fail");
+                                }
+                            });
+
+                        } else if (response.code() == 455) {
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("username esta en uso");
+                                }
+                            });
+
+                        } else if (response.code() == 456) {
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("mail esta en uso");
+                                }
+                            });
+
                         }
 
                     }
@@ -259,7 +308,7 @@ public class UIFactory {
         return_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         return_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
-        //afegir actors
+
         stage.addActor(bckgrndTouchCatcher);
         stage.addActor(return_button);
         stage.addActor(login_button);
