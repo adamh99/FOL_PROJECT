@@ -4,6 +4,9 @@
     package="com.mygdx.game">
 
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="31" />
 
     <application
         android:allowBackup="true"

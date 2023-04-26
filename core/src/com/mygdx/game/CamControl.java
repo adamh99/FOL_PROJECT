@@ -31,7 +31,7 @@ public class CamControl implements InputProcessor {
 	private int MODEL_UP = Keys.O;
 	private int MODEL_DOWN =Keys.U;
 
-	private float velocity = 5;
+	private float velocity = 40;
 	private float degreesPerPixel = 0.5f;
 	private final Vector3 tmp = new Vector3();
 
@@ -152,53 +152,7 @@ public class CamControl implements InputProcessor {
 		if (keys.containsKey(SHIFT)) {
 			camera.position.y += deltaTime;
 		}
-		if (keys.containsKey(NEXT_MODEL)) {
-			MapBuilder.next_model();
-			keys.remove(NEXT_MODEL, 0);
-		}
-		if (keys.containsKey(PLACE_MODEL)) {
-			MapBuilder.place_model();
-			keys.remove(PLACE_MODEL, 0);
-		}
-		if (keys.containsKey(MODEL_LEFT)) {
-			MapBuilder.incrementPosition(2, 0, 0);
-			keys.remove(Keys.J, 0);
-		}
-		if (keys.containsKey(MODEL_RIGHT)) {
-			MapBuilder.incrementPosition(-2, 0, 0);
-			keys.remove(Keys.L, 0);
-		}
-		if (keys.containsKey(MODEL_FORWARD)) {
-			MapBuilder.incrementPosition(0, 0, 2);
-			keys.remove(Keys.I, 0);
-		}
-		if (keys.containsKey(MODEL_BACK)) {
-			MapBuilder.incrementPosition(0, 0, -2);
-			keys.remove(Keys.K, 0);
-		}
-		if (keys.containsKey(MODEL_UP)) {
-			MapBuilder.incrementPosition(0, 1, 0);
-			keys.remove(Keys.O, 0);
-		} if (keys.containsKey(MODEL_DOWN)) {
-			MapBuilder.incrementPosition(0, -1, 0);
-			keys.remove(Keys.U, 0);
-		}
-	if (keys.containsKey(Keys.R)) {
-		MapBuilder.rotateClockwise();;
-		keys.remove(Keys.R, 0);
-	}
-		if (keys.containsKey(Keys.BACKSPACE)) {
-			keys.remove(Keys.BACKSPACE, 0);
-			MapBuilder.deleteLast();
-		}
-		if (keys.containsKey(Keys.NUM_0)) {
-			keys.remove(Keys.NUM_0, 0);
-			MapBuilder.printMapJson();
-		}
-		if (keys.containsKey(Keys.C)) {
-			keys.remove(Keys.C, 0);
-			MapBuilder.next_category();
-		}
+
 
 		camera.update(true);
 	}

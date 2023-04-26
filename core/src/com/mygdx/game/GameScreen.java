@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,26 +13,29 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.awt.AWTException;
+
 import java.io.IOException;
 
 public class GameScreen implements Screen {
 	//features a test 3d world
 	ModelBatch modelBatch;
 	public PerspectiveCamera cam;
-	
-	public Model model;
-	public Model modelTest;
-	static Array<MapObject> instances;
-	
+	static Array<ModelInstance> instances;
+	Model firstFloor;
 	
 	public Environment environment;
 	
@@ -39,12 +43,10 @@ public class GameScreen implements Screen {
 	public float delta;
 	
 	//DEBUG UI
-	Stage debugUi;
+
 	BitmapFont debugFont;
 	SpriteBatch sb;
-	
-	ModelBuilder modelBuilder;//debugCursor
-	MapBuilder mapBuilder;
+
 	boolean loading;
 	
 	ModelInstance debug3dcursor;
@@ -52,7 +54,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(){
 		modelBatch = new ModelBatch();
-		instances = new Array<MapObject>();
+		instances = new Array<ModelInstance>();
 		
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(1f, 10f, 1f);
@@ -72,45 +74,44 @@ public class GameScreen implements Screen {
 		Gdx.input.setCursorCatched(false);
 		
 		//ui
-		debugUi = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
 		debugFont = new BitmapFont(Gdx.files.internal("default.fnt"));
 
 		debugFont.setColor(1,0,0, 1);
 		sb = new SpriteBatch ();
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.01f, 0.01f, 0.01f, 1f));
-		
-		environment.add(new PointLight().set(1f,0.6f,0.1f,-3f,8f,9f,70f));
 
-		//chapuza
-		AssetManager assets = new AssetManager();
-		assets.load("first_floor.g3db",Model.class);
-		assets.finishLoading();
-		instances.add(new MapObject("first_floor.g3db",assets.<Model>get("first_floor.g3db")));
-		
-		MapBuilder.init(); //loads assets
-		
-		try {
-			MapBuilder.loadMapFromFile();
-		} catch (IOException e) {
-			//TODO Auto-generated catch block
-			System.out.println(e);
-		}
-		 modelBuilder = new ModelBuilder();
-		 
-		loadInstances();
-		
+		setLighting();
     }
-	
-		
+	private void setLighting(){
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
+
+		// Define the direction of the light
+		Vector3 direction = new Vector3(-1f, -0.5f, -1f).nor();
+
+// Define the color of the light
+		Color color = new Color(1f, 1f, 0.8f, 1f);
+
+// Create the DirectionalLight object
+		DirectionalLight light = new DirectionalLight();
+		light.set(color, direction);
+
+// Add the light to the environment
+		environment.add(light);
+
+	}
+	AssetManager assets = new AssetManager();
 	public void loadInstances() {
-	
-		/*modelIn.materials.get(0).set(
-			    new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-			);
-		*/ //parece que no hace nada?
-		
-		
+
+
+		assets.load("first_floor.g3dj",Model.class);
+		assets.finishLoading();
+		firstFloor = assets.<Model>get("first_floor.g3dj");
+		ModelInstance firstFloorIn = new ModelInstance(firstFloor);
+		firstFloorIn.transform = new Matrix4(new Vector3(),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		instances.add(firstFloorIn);
+
+
 
 		loading = false;
 	}
@@ -128,10 +129,10 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(150f, 10f, 2f,0.5f);
 		if(CamControl.android_forward){tmp.set(cam.direction).nor().scl(delta * 1);
 		cam.position.add(tmp);}
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | 
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
 				(Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
-		if (loading && MapBuilder.assets.update())
+		if (loading && assets.update())
 			loadInstances();
 		try {
 			camController.update();
