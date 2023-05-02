@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 		System.out.println(middleFloor.meshes.first().calculateBoundingBox().getHeight());
 		interiorFirstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
 		firstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
-		middleFloorIn.transform = new Matrix4(new Vector3(0,middleFloor.meshes.first().calculateBoundingBox().getHeight()/0.125f,middleFloor.meshes.first().calculateBoundingBox().getWidth()/0.125f),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		middleFloorIn.transform = new Matrix4(new Vector3(0,middleFloor.meshes.first().calculateBoundingBox().getHeight()/2+middleFloor.meshes.first().calculateBoundingBox().getHeight()/0.125f*1.5f,middleFloor.meshes.first().calculateBoundingBox().getWidth()/0.125f),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
 		topFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
 
 
