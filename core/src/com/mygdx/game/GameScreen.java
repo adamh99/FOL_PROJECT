@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 	ModelBatch modelBatch;
 	public PerspectiveCamera cam;
 	static Array<ModelInstance> instances;
-	Model firstFloor;
+	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor;
 	
 	public Environment environment;
 	
@@ -104,12 +104,33 @@ public class GameScreen implements Screen {
 	public void loadInstances() {
 
 
-		assets.load("first_floor.g3dj",Model.class);
+		assets.load("floors/FirstFloor.g3db",Model.class);
+		assets.load("floors/InteriorFirstFloor.g3db",Model.class);
+		assets.load("floors/MiddleFloor.g3db",Model.class);
+		assets.load("floors/TopFloor.g3db",Model.class);
 		assets.finishLoading();
-		firstFloor = assets.<Model>get("first_floor.g3dj");
+
+		firstFloor = assets.<Model>get("floors/FirstFloor.g3db");
+		interiorfirstFloor = assets.<Model>get("floors/InteriorFirstFloor.g3db");
+		middleFloor = assets.<Model>get("floors/MiddleFloor.g3db");
+		topFloor = assets.<Model>get("floors/TopFloor.g3db");
+
 		ModelInstance firstFloorIn = new ModelInstance(firstFloor);
-		firstFloorIn.transform = new Matrix4(new Vector3(),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		ModelInstance interiorFirstFloorIn = new ModelInstance(interiorfirstFloor);
+		ModelInstance middleFloorIn = new ModelInstance(middleFloor);
+		ModelInstance topFloorIn = new ModelInstance(topFloor);
+
+		System.out.println(middleFloor.meshes.first().calculateBoundingBox().getHeight());
+		interiorFirstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		firstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		middleFloorIn.transform = new Matrix4(new Vector3(0,middleFloor.meshes.first().calculateBoundingBox().getHeight()/0.125f,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+		topFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
+
+
 		instances.add(firstFloorIn);
+		instances.add(interiorFirstFloorIn);
+		instances.add(middleFloorIn);
+		//instances.add(topFloorIn);
 
 
 
