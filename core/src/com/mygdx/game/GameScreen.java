@@ -137,37 +137,41 @@ public class GameScreen implements Screen {
 		instances.add(topFloorIn);*/
 		Array<ModelInstance> floors = new Array<>();
 
-		for (int i = 0; i < 5; i++){
+		for(int j = 0; j < 10; j++){
+		for (int i = 0; i < 10; i++){
 			ModelInstance aux = null;
 			ModelInstance aux2 = null;
+
+			float random = (float)Math.random()*getFloorWidth();
 			if(i==0){
 				aux = new ModelInstance(firstFloor);
-				aux.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorfirstFloor);
-				aux2.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<4){
+			}else if(i<9){
 				aux = new ModelInstance(middleFloor);
-				aux.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorMiddleFloor);
-				aux2.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<5){
+			}else if(i<10){
 				aux = new ModelInstance(topFloor);
-				aux.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorTopFloor);
-				aux2.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 				floors.add(aux);
 				floors.add(aux2);
 			}
 			instances.add(aux);
 			instances.add(aux2);
+		}
 		}
 
 
