@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
-		cam.far = 300f;
+		cam.far = 10000f;
 		cam.update();
 		
 		loading = true;
@@ -137,7 +137,7 @@ public class GameScreen implements Screen {
 		instances.add(topFloorIn);*/
 		Array<ModelInstance> floors = new Array<>();
 
-		for (int i = 0; i < 10; i++){
+		for (int i = 0; i < 5; i++){
 			ModelInstance aux = null;
 			ModelInstance aux2 = null;
 			if(i==0){
@@ -149,7 +149,7 @@ public class GameScreen implements Screen {
 
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<9){
+			}else if(i<4){
 				aux = new ModelInstance(middleFloor);
 				aux.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
@@ -157,7 +157,7 @@ public class GameScreen implements Screen {
 				aux2.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<10){
+			}else if(i<5){
 				aux = new ModelInstance(topFloor);
 				aux.transform = new Matrix4(new Vector3(0,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
