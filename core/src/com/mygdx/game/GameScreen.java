@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
-		cam.far = 10000f;
+		cam.far = 1000f;
 		cam.update();
 		
 		loading = true;
