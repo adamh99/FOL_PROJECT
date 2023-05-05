@@ -54,7 +54,7 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         play_button.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Game.setScreen(new GameScreen());
+                Game.setScreen(new GameScreen(Game));
             }
         } );
 
