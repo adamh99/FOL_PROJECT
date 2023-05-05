@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Screens.PopupDialogScreen;
 
 import java.awt.AWTException;
 
@@ -51,11 +52,13 @@ public class GameScreen implements Screen {
 	
 	ModelInstance debug3dcursor;
 	
-
-	public GameScreen(){
+	MyFolGame game;
+	public GameScreen(MyFolGame game){
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
-		
+		this.game = game;
+		game.setScreen(new PopupDialogScreen("yeeee", com.mygdx.game.Settings.AssetManager.skin,this));
+
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
@@ -210,6 +213,7 @@ public class GameScreen implements Screen {
 		debugFont.draw(sb, "FPS="+Gdx.graphics.getFramesPerSecond()+" camxyz="
 		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
 		sb.end();
+
 
 	}
 
