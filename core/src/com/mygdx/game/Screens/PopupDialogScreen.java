@@ -9,29 +9,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Settings.AssetLoader;
 
 public class PopupDialogScreen implements Screen {
 
     private Stage stage;
-    private Skin skin;
+    private Skin skin = AssetLoader.skin;
     private String message;
     private TextButton closeButton;
 
     Screen underlying;
+
+    public PopupDialogScreen(String title, String message, Screen underlying) {
     enum Positions{
         TOP_RIGHT,TOP_LEFT, BOTTOM_RIGHT, BOTTOM_LEFT
     }
     public PopupDialogScreen(String message, Skin skin, Screen underlying, Positions screenPos) {
         this.message = message;
-        this.skin = skin;
         this.underlying = underlying;
         stage = new Stage(new ScreenViewport());
-        System.out.println("POP UP DIALOG CONSTRUCTOR");
         // create and add the dialog to the stage
-        Dialog dialog = new Dialog("", skin);
-        dialog.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        dialog.setSize(1000, 1000);
-        dialog.show(stage);
+        Dialog dialog = new Dialog(title, skin);
+        dialog.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*0.1f);
+        dialog.setSize(300, 300);
+        //dialog.show(stage);
         Label messageLabel = new Label(message, skin);
         dialog.add(messageLabel).pad(10);
 
