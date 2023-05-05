@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -8,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.game.Settings.AssetManager;
+import com.mygdx.game.Settings.AssetLoader;
 
 
 public class Message {
     private static final float DURATION = 2.0f; // Display duration in seconds
-    private static final Skin skin = AssetManager.skin;
+    private static final Skin skin = AssetLoader.skin;
     public static final Stage stage = new Stage();
     private static final Label label = new Label("", skin);
 

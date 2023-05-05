@@ -22,17 +22,14 @@ public class PopupDialogScreen implements Screen {
     public PopupDialogScreen(String message, Skin skin, Screen underlying) {
         this.message = message;
         this.skin = skin;
+        this.underlying = underlying;
         stage = new Stage(new ScreenViewport());
         System.out.println("POP UP DIALOG CONSTRUCTOR");
-    }
-
-    @Override
-    public void show() {
         // create and add the dialog to the stage
-        Dialog dialog = new Dialog("NPC Dialog", skin);
-        dialog.setPosition(100, 100);
-        dialog.setSize(200, 100);
-
+        Dialog dialog = new Dialog("AAAAAAAAAAAAAAAAAAAA", skin);
+        dialog.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        dialog.setSize(1000, 1000);
+        dialog.show(stage);
         Label messageLabel = new Label(message, skin);
         dialog.add(messageLabel).pad(10);
 
@@ -42,9 +39,14 @@ public class PopupDialogScreen implements Screen {
     }
 
     @Override
+    public void show() {
+
+    }
+
+    @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        underlying.render(delta);
+        System.out.println("DRAWING");
         stage.act(delta);
         stage.draw();
     }

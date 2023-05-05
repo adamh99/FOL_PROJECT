@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -13,19 +12,15 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.Screens.PopupDialogScreen;
+import com.mygdx.game.Settings.AssetLoader;
 
 import java.awt.AWTException;
 
@@ -54,10 +49,10 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
+		displayPopUpDialog("me cago encima");
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
-		game.setScreen(new PopupDialogScreen("yeeee", com.mygdx.game.Settings.AssetManager.skin,this));
 
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(1f, 10f, 1f);
@@ -140,35 +135,55 @@ public class GameScreen implements Screen {
 		instances.add(topFloorIn);*/
 		Array<ModelInstance> floors = new Array<>();
 
-		for(int j = 0; j < 10; j++){
-		for (int i = 0; i < 10; i++){
+		Color[] colors = new Color[] {
+				new Color(0.69f, 0.48f, 0.38f, 1),  // Earthy brown
+				new Color(0.9f, 0.9f, 0.9f, 1),    // Light gray
+				new Color(0.63f, 0.77f, 0.8f, 1),  // Light blue
+				new Color(0.58f, 0.73f, 0.43f, 1), // Olive green
+				new Color(0.9f, 0.63f, 0.56f, 1),  // Coral
+				new Color(0.47f, 0.45f, 0.48f, 1)  // Charcoal gray
+		};
+		int colorIterator = 0;
+
+		for(int j = 0; j < 20; j++){
+			float random_w = (float) Math.random()*getFloorWidth();
+			float random_d = (float) Math.random()*getFloorDepth();
+		for (int i = 0; i < 20; i++){
 			ModelInstance aux = null;
 			ModelInstance aux2 = null;
 
 			float random = (float)Math.random()*getFloorWidth();
 			if(i==0){
 				aux = new ModelInstance(firstFloor);
-				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(random_w*j,0,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorfirstFloor);
-				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(random_w*j,0,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+
 
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<9){
+			}else if(i<19){
 				aux = new ModelInstance(middleFloor);
-				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorMiddleFloor);
-				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+
+
+				if(colorIterator>=colors.length)colorIterator = 0;
+
+				aux.materials.pop().set(new ColorAttribute(ColorAttribute.Diffuse, colors[colorIterator]));
+				colorIterator++;
+
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<10){
+			}else if(i<20){
 				aux = new ModelInstance(topFloor);
-				aux.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorTopFloor);
-				aux2.transform = new Matrix4(new Vector3(getFloorWidth()*j+random,getFloorHeight()*i,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux2.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 				floors.add(aux);
 				floors.add(aux2);
 			}
@@ -181,16 +196,21 @@ public class GameScreen implements Screen {
 
 		loading = false;
 	}
-	public void updateEntityPos() {
-		
+	boolean popUp = false;
+	PopupDialogScreen popupscreen;
+	public void displayPopUpDialog(String message){
+		popupscreen = new PopupDialogScreen(message, AssetLoader.skin, this);
+		popUp = true;
 	}
 
+
 	Vector3 tmp = new Vector3();
+
 	@Override
 	public void render (float delta) {
 		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
-		
+
 		//color azul para el cielo
 		Gdx.gl.glClearColor(150f, 10f, 2f,0.5f);
 		if(CamControl.android_forward){tmp.set(cam.direction).nor().scl(delta * 1);
@@ -218,6 +238,9 @@ public class GameScreen implements Screen {
 		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
 		sb.end();
 
+		if(popUp){
+			//popupscreen.render(delta);
+		}
 
 	}
 

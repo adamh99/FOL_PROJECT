@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.GameScreen;
 import com.mygdx.game.MyFolGame;
-import com.mygdx.game.Settings.AssetManager;
+import com.mygdx.game.Settings.AssetLoader;
 
 public class TitleScreen extends ApplicationAdapter implements Screen {
     private MyFolGame Game;
@@ -32,23 +32,23 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         final Table table = new Table();
         table.setFillParent(true);
 
-        Label userNameLabel = new Label("UsernameExample", AssetManager.skin);
+        Label userNameLabel = new Label("UsernameExample", AssetLoader.skin);
         userNameLabel.setPosition(Gdx.graphics.getWidth()*0.05f,Gdx.graphics.getHeight()*0.95f);
 
 
-        login_button = new TextButton("Join", AssetManager.skin);
+        login_button = new TextButton("Join", AssetLoader.skin);
         login_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         login_button.setPosition(Gdx.graphics.getWidth()*0.15f,Gdx.graphics.getHeight()*0.95f);
 
-        register_button = new TextButton("Register", AssetManager.skin);
+        register_button = new TextButton("Register", AssetLoader.skin);
         register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         register_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
-        newGame_button = new TextButton("New Game", AssetManager.skin);
+        newGame_button = new TextButton("New Game", AssetLoader.skin);
         newGame_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         newGame_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.45f);
 
-        play_button = new TextButton("PLAY", AssetManager.skin);
+        play_button = new TextButton("PLAY", AssetLoader.skin);
         play_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         play_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f);
         play_button.addListener( new ClickListener() {
@@ -101,6 +101,6 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        AssetManager.skin.dispose();
+        AssetLoader.skin.dispose();
     }
 }

@@ -1,7 +1,6 @@
 package com.mygdx.game.Settings;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -75,7 +74,7 @@ public class UIFactory {
         Gdx.input.setInputProcessor(stage);
         bckgrndTouchCatcher = new Actor();
         bckgrndTouchCatcher.setBounds(0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        register_button = new TextButton("Register", AssetManager.skin);
+        register_button = new TextButton("Register", AssetLoader.skin);
         register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         register_button.setPosition(center-(register_button.getWidth()/2),Gdx.graphics.getHeight()*0.2f);
         register_button.addListener(new ClickListener() {
@@ -173,31 +172,31 @@ public class UIFactory {
             }
         });
 
-        password_confirmation_field = new TextField("",AssetManager.skin);
+        password_confirmation_field = new TextField("", AssetLoader.skin);
         password_confirmation_field.setMessageText("Confirm your password");
         password_confirmation_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         password_confirmation_field.setPosition(center-(password_confirmation_field.getWidth()/2),register_button.getY()+password_confirmation_field.getHeight());
         password_confirmation_field.setPasswordMode(true);
         password_confirmation_field.setPasswordCharacter('*');
 
-        password_field = new TextField("",AssetManager.skin);
+        password_field = new TextField("", AssetLoader.skin);
         password_field.setMessageText("Password");
         password_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         password_field.setPosition(center-(password_field.getWidth()/2),password_confirmation_field.getY()+password_field.getHeight());
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
 
-        email_field = new TextField("",AssetManager.skin);
+        email_field = new TextField("", AssetLoader.skin);
         email_field.setMessageText("Email");
         email_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         email_field.setPosition(center-(email_field.getWidth()/2),password_field.getY()+email_field.getHeight());
 
-        username_field = new TextField("",AssetManager.skin);
+        username_field = new TextField("", AssetLoader.skin);
         username_field.setMessageText("Username");
         username_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         username_field.setPosition(center-(username_field.getWidth()/2), email_field.getY()+ username_field.getHeight());
 
-        return_button = new TextButton("Home", AssetManager.skin);
+        return_button = new TextButton("Home", AssetLoader.skin);
         return_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         return_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
@@ -232,7 +231,7 @@ public class UIFactory {
         bckgrndTouchCatcher = new Actor();
         bckgrndTouchCatcher.setBounds(0,0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
-        login_button = new TextButton("Login", AssetManager.skin);
+        login_button = new TextButton("Login", AssetLoader.skin);
         login_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         login_button.setPosition(center-(login_button.getWidth()/2),Gdx.graphics.getHeight()*0.2f);
         login_button.addListener(new ClickListener() {
@@ -291,24 +290,24 @@ public class UIFactory {
         });
 
 
-        password_field = new TextField("",AssetManager.skin);
+        password_field = new TextField("", AssetLoader.skin);
         password_field.setMessageText("Password");
         password_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         password_field.setPosition(center-(password_field.getWidth()/2),login_button.getY()+password_field.getHeight());
         password_field.setPasswordMode(true);
         password_field.setPasswordCharacter('*');
 
-        email_field = new TextField("",AssetManager.skin);
+        email_field = new TextField("", AssetLoader.skin);
         email_field.setMessageText("Email");
         email_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         email_field.setPosition(center-(email_field.getWidth()/2),password_field.getY()+email_field.getHeight());
 
-        username_field = new TextField("",AssetManager.skin);
+        username_field = new TextField("", AssetLoader.skin);
         username_field.setMessageText("Username");
         username_field.setSize(Gdx.graphics.getWidth()*0.2f, Gdx.graphics.getWidth()*0.025f);
         username_field.setPosition(center-(username_field.getWidth()/2), email_field.getY()+ username_field.getHeight());
 
-        return_button = new TextButton("Home", AssetManager.skin);
+        return_button = new TextButton("Home", AssetLoader.skin);
         return_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
         return_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
 
