@@ -26,7 +26,7 @@ public class PopupDialogScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         System.out.println("POP UP DIALOG CONSTRUCTOR");
         // create and add the dialog to the stage
-        Dialog dialog = new Dialog("AAAAAAAAAAAAAAAAAAAA", skin);
+        Dialog dialog = new Dialog("", skin);
         dialog.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         dialog.setSize(1000, 1000);
         dialog.show(stage);
@@ -45,8 +45,8 @@ public class PopupDialogScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        System.out.println("DRAWING");
+       //pintar toda la pantalla de un color Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act(delta);
         stage.draw();
     }

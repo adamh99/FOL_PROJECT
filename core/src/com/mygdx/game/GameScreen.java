@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
-		displayPopUpDialog("me cago encima");
+		displayPopUpDialog("Example text????");
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
@@ -239,7 +239,7 @@ public class GameScreen implements Screen {
 		sb.end();
 
 		if(popUp){
-			//popupscreen.render(delta);
+			popupscreen.render(delta);
 		}
 
 	}
