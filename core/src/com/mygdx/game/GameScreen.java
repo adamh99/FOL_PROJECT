@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Screens.PopupDialogScreen;
-import com.mygdx.game.Settings.AssetLoader;
+
 
 import java.awt.AWTException;
 
@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
-		displayPopUpDialog("TITLE","Example text????");
+		displayPopUpDialog("TITLE","Example text");
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
@@ -199,7 +199,7 @@ public class GameScreen implements Screen {
 	boolean popUp = false;
 	PopupDialogScreen popupscreen;
 	public void displayPopUpDialog(String title,String message){
-		popupscreen = new PopupDialogScreen(title,message,this);
+		popupscreen = new PopupDialogScreen(title,message,this, PopupDialogScreen.EnumClass.Positions.CENTER);
 		popUp = true;
 	}
 
