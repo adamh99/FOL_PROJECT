@@ -18,8 +18,10 @@ public class PopupDialogScreen implements Screen {
     private TextButton closeButton;
 
     Screen underlying;
-
-    public PopupDialogScreen(String message, Skin skin, Screen underlying) {
+    enum Positions{
+        TOP_RIGHT,TOP_LEFT, BOTTOM_RIGHT, BOTTOM_LEFT
+    }
+    public PopupDialogScreen(String message, Skin skin, Screen underlying, Positions screenPos) {
         this.message = message;
         this.skin = skin;
         this.underlying = underlying;
