@@ -259,12 +259,22 @@ public class UIFactory {
                         System.out.println(response.code());
                         //Quan et logueges correctament
                         if (response.code()==202){
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("LOGIN CORRECT");
+                                }
+                            });
                             logueado=true;
-                            username_field.setColor(Color.RED);
+
                             //error
                         }  else if (response.code() == 401) {
-                            username_field.setColor(Color.RED);
-
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run () {
+                                    Message.show("LOGIN ERROR");
+                                }
+                            });
                         }
 
                     }

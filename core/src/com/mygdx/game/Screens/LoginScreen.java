@@ -26,7 +26,6 @@ public class LoginScreen implements Screen {
         this.game = game;
 
         Gdx.input.setInputProcessor(stage);
-        Message.show("aaaaaaaaaaaaaaaa");
         stage = new UIFactory(game).getLoginMenu();
 
     }
