@@ -78,7 +78,7 @@ public class GameScreen implements Screen {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
-		Gdx.input.setInputProcessor(camController);
+
 		Gdx.input.setCursorCatched(false);
 		
 		//ui
