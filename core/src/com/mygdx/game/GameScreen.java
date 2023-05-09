@@ -20,7 +20,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Screens.PopupDialogScreen;
 
 
@@ -31,6 +33,8 @@ import java.io.IOException;
 public class GameScreen implements Screen {
 	//features a test 3d world
 	ModelBatch modelBatch;
+
+	Stage stage;
 	public PerspectiveCamera cam;
 	static Array<ModelInstance> instances;
 	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,ground;
@@ -51,12 +55,16 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
-		//displayPopUpDialog("TITLE","Example text");
+
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
-
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		stage=new Stage(new ScreenViewport());
+		Gdx.input.setInputProcessor(stage);
+		displayPopUpDialog("EXAMPLE MISSION","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
+
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
@@ -89,14 +97,14 @@ public class GameScreen implements Screen {
 		// Define the direction of the light
 		Vector3 direction = new Vector3(-1f, -0.5f, -1f).nor();
 
-// Define the color of the light
+		// Define the color of the light
 		Color color = new Color(1f, 1f, 0.8f, 1f);
 
-// Create the DirectionalLight object
+		// Create the DirectionalLight object
 		DirectionalLight light = new DirectionalLight();
 		light.set(color, direction);
 
-// Add the light to the environment
+		// Add the light to the environment
 		environment.add(light);
 
 	}
@@ -187,10 +195,10 @@ public class GameScreen implements Screen {
 
 		loading = false;
 	}
-	boolean popUp = false;
+	public boolean popUp = false;
 	PopupDialogScreen popupscreen;
-	public void displayPopUpDialog(String title,String message){
-		popupscreen = new PopupDialogScreen(title,message,this, PopupDialogScreen.EnumClass.Positions.CENTER);
+	public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
+		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
 	}
 
@@ -217,7 +225,6 @@ public class GameScreen implements Screen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 		modelBatch.begin(cam);
 		modelBatch.render(instances,environment);
