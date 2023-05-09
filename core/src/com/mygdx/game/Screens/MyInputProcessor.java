@@ -8,15 +8,18 @@ import com.badlogic.gdx.math.Vector3;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.mygdx.game.GameScreen;
 
 public class MyInputProcessor implements InputProcessor {
 
     private final PerspectiveCamera camera;
     private float startX, startY;
     private boolean isDragging;
+    GameScreen gameScreen;
 
-    public MyInputProcessor(PerspectiveCamera camera) {
+    public MyInputProcessor(PerspectiveCamera camera, GameScreen gameScreen) {
         this.camera = camera;
+        this.gameScreen = gameScreen;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class MyInputProcessor implements InputProcessor {
         if (!isDragging) return false;
         float deltaX = -(screenX - startX) * camera.fieldOfView / camera.viewportHeight;
         float deltaY = (screenY - startY) * camera.fieldOfView / camera.viewportHeight;
-        camera.position.add(camera.direction.cpy().scl(deltaX, deltaY, 0));
+        gameScreen.rotateCam(deltaX);
         return true;
     }
 

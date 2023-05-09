@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 		instances = new Array<ModelInstance>();
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		myInputProcessor = new MyInputProcessor(cam);
+		myInputProcessor = new MyInputProcessor(cam, this);
 
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
@@ -242,6 +242,9 @@ public class GameScreen implements Screen {
 		if(popUp){
 			popupscreen.render(delta);
 		}
+		if(!loading){
+			updateTreeCamera();
+		}
 
 	}
 
@@ -292,6 +295,24 @@ public class GameScreen implements Screen {
 		float unscaled_d = middleFloor.meshes.first().calculateBoundingBox().getDepth();
 		float actual_d = unscaled_d/2+unscaled_d/SCALE*1.5f;
 		return actual_d;
+	}
+
+	static final float CAM_PATH_RADIUS = 50f;
+	static final float CAM_HEIGHT = 8f;
+	float camPathAngle = 0;
+
+	void updateTreeCamera(){
+		Vector3 camPosition = cam.position;
+		camPosition.set(CAM_PATH_RADIUS, CAM_HEIGHT, 0); //Move camera to default location on circle centered at origin
+		camPosition.rotate(Vector3.Y, camPathAngle); //Rotate the position to the angle you want. Rotating this vector about the Y axis is like walking along the circle in a counter-clockwise direction.
+		camPosition.add(new Vector3(getFloorWidth(),0,getFloorWidth())); //translate the circle from origin to tree center
+		cam.up.set(Vector3.Y); //Make sure camera is still upright, in case a previous calculation caused it to roll or pitch
+		cam.lookAt(new Vector3(getFloorWidth(),0,getFloorWidth()));
+		cam.update(); //Register the changes to the camera position and direction
+	}
+
+	public void rotateCam(float magnitude){
+		camPathAngle += magnitude;
 	}
 
 
