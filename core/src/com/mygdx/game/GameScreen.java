@@ -13,11 +13,13 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Screens.PopupDialogScreen;
 
@@ -31,7 +33,7 @@ public class GameScreen implements Screen {
 	ModelBatch modelBatch;
 	public PerspectiveCamera cam;
 	static Array<ModelInstance> instances;
-	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor;
+	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,ground;
 	final float SCALE = 0.125f;
 	public Environment environment;
 	
@@ -49,7 +51,7 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
-		displayPopUpDialog("TITLE","Example text");
+		//displayPopUpDialog("TITLE","Example text");
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
@@ -101,7 +103,6 @@ public class GameScreen implements Screen {
 	AssetManager assets = new AssetManager();
 	public void loadInstances() {
 
-
 		assets.load("floors/FirstFloor.g3db",Model.class);
 		assets.load("floors/InteriorFirstFloor.g3db",Model.class);
 		assets.load("floors/MiddleFloor.g3db",Model.class);
@@ -117,22 +118,9 @@ public class GameScreen implements Screen {
 		topFloor = assets.<Model>get("floors/TopFloor.g3db");
 		interiorTopFloor = assets.<Model>get("floors/InteriorTopFloor.g3db");
 
-		/*ModelInstance firstFloorIn = new ModelInstance(firstFloor);
-		ModelInstance interiorFirstFloorIn = new ModelInstance(interiorfirstFloor);
-		ModelInstance middleFloorIn = new ModelInstance(middleFloor);
-		ModelInstance topFloorIn = new ModelInstance(topFloor);
+		ModelInstance aux = null;
+		ModelInstance aux2 = null;
 
-
-		interiorFirstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
-		firstFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
-		middleFloorIn.transform = new Matrix4(new Vector3(0,getFloorHeight(),getFloorDepth()),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
-		topFloorIn.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(0.125f,0.125f,0.125f));
-
-
-		instances.add(firstFloorIn);
-		instances.add(interiorFirstFloorIn);
-		instances.add(middleFloorIn);
-		instances.add(topFloorIn);*/
 		Array<ModelInstance> floors = new Array<>();
 
 		Color[] colors = new Color[] {
@@ -145,17 +133,20 @@ public class GameScreen implements Screen {
 		};
 		int colorIterator = 0;
 
-		for(int j = 0; j < 20; j++){
-			float random_w = (float) Math.random()*getFloorWidth();
-			float random_d = (float) Math.random()*getFloorDepth();
-		for (int i = 0; i < 20; i++){
-			ModelInstance aux = null;
-			ModelInstance aux2 = null;
+
+		for(int j = 0; j < 1; j++){
+			float random_w = 0;//(float) Math.random()*getFloorWidth();
+			float random_d = 0;//(float) Math.random()*getFloorDepth();
+
+			int floorNumber = 6;
+
+		for (int i = 0; i < floorNumber; i++){
+
 
 			float random = (float)Math.random()*getFloorWidth();
 			if(i==0){
 				aux = new ModelInstance(firstFloor);
-				aux.transform = new Matrix4(new Vector3(random_w*j,0,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+				aux.transform = new Matrix4(new Vector3(0,0,0),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				aux2 = new ModelInstance(interiorfirstFloor);
 				aux2.transform = new Matrix4(new Vector3(random_w*j,0,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
@@ -163,7 +154,7 @@ public class GameScreen implements Screen {
 
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<19){
+			}else if(i<(floorNumber-1)){
 				aux = new ModelInstance(middleFloor);
 				aux.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
@@ -178,12 +169,12 @@ public class GameScreen implements Screen {
 
 				floors.add(aux);
 				floors.add(aux2);
-			}else if(i<20){
+			}else if(i<floorNumber){
 				aux = new ModelInstance(topFloor);
 				aux.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
-
 				aux2 = new ModelInstance(interiorTopFloor);
 				aux2.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
+
 				floors.add(aux);
 				floors.add(aux2);
 			}
@@ -292,4 +283,5 @@ public class GameScreen implements Screen {
 		float actual_d = unscaled_d/2+unscaled_d/SCALE*1.5f;
 		return actual_d;
 	}
+
 }

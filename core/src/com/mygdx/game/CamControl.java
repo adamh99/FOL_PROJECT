@@ -31,7 +31,7 @@ public class CamControl implements InputProcessor {
 	private int MODEL_UP = Keys.O;
 	private int MODEL_DOWN =Keys.U;
 
-	private float velocity = 40;
+	private float velocity = 200;
 	private float degreesPerPixel = 0.5f;
 	private final Vector3 tmp = new Vector3();
 
