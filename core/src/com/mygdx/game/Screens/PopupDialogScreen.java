@@ -37,12 +37,13 @@ public class PopupDialogScreen implements Screen {
     float width = Gdx.graphics.getWidth();
 
 
-    public PopupDialogScreen(String title, String message, final GameScreen underlying, EnumClass.Positions positions, Stage stage) {
+    public PopupDialogScreen(String title, String message, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
 
 
         this.message = message;
         this.underlying = underlying;
         this.stage=stage;
+        Gdx.input.setInputProcessor(stage);
 
 
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
@@ -62,6 +63,7 @@ public class PopupDialogScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 dialog.remove();
                 underlying.popUp= false;
+                Gdx.input.setInputProcessor(underlying.myInputProcessor);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Screens.MyInputProcessor;
 import com.mygdx.game.Screens.PopupDialogScreen;
 
 
@@ -36,12 +38,14 @@ public class GameScreen implements Screen {
 
 	Stage stage;
 	public PerspectiveCamera cam;
+
+	public MyInputProcessor myInputProcessor;
 	static Array<ModelInstance> instances;
 	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,ground;
 	final float SCALE = 0.125f;
 	public Environment environment;
 	
-	CamControl camController;
+	public CamControl camController;
 	public float delta;
 	
 	//DEBUG UI
@@ -55,14 +59,14 @@ public class GameScreen implements Screen {
 	
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
-
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		myInputProcessor = new MyInputProcessor(cam);
 
 		stage=new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setInputProcessor(myInputProcessor);
 		displayPopUpDialog("EXAMPLE MISSION","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
 
 		cam.position.set(1f, 10f, 1f);
@@ -225,7 +229,6 @@ public class GameScreen implements Screen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		modelBatch.begin(cam);
 		modelBatch.render(instances,environment);
 		
@@ -290,5 +293,6 @@ public class GameScreen implements Screen {
 		float actual_d = unscaled_d/2+unscaled_d/SCALE*1.5f;
 		return actual_d;
 	}
+
 
 }
