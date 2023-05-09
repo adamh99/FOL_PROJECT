@@ -60,7 +60,6 @@ public class PopupDialogScreen implements Screen {
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 dialog.remove();
                 underlying.popUp= false;
             }
