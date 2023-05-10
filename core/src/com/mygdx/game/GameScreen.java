@@ -210,8 +210,6 @@ public class GameScreen implements Screen {
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
 	}
-
-
 	Vector3 tmp = new Vector3();
 
 	@Override
@@ -305,6 +303,7 @@ public class GameScreen implements Screen {
 
 	static final float CAM_PATH_RADIUS = 100f;
 	static float cam_height = 8f;
+	static float target_height = 8f;
 	float camPathAngle = 0;
 
 	void updateTreeCamera(){
@@ -315,17 +314,15 @@ public class GameScreen implements Screen {
 		cam.up.set(Vector3.Y); //Make sure camera is still upright, in case a previous calculation caused it to roll or pitch
 		cam.lookAt(new Vector3(getFloorWidth()/2,cam_height,getFloorWidth()/2));
 		cam.update(); //Register the changes to the camera position and direction
+
+
 	}
 
 	public void rotateCam(float magnitude){
 		camPathAngle += magnitude/10;
 	}
-	public void increaseCamFloorLevel(){
-		cam_height += getFloorHeight();
+	public void setCamHeight(float height){
+	cam_height += height/8;
 	}
-	public void decreaseCamFloorLevel(){
-		cam_height -= getFloorHeight();
-	}
-
 
 }

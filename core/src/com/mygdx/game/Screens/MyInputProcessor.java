@@ -59,22 +59,17 @@ public class MyInputProcessor implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (!isDragging) return false;
         float deltaX = -(screenX+1 - lastScreenX);
-        float deltaY = (screenY - lastScreenY);
-        if(Math.abs(deltaX)>Math.abs(deltaY)) {
+        float deltaY = (screenY+1 - lastScreenY);
+
             gameScreen.rotateCam(deltaX);
             rotating = true;
             heightIncreased = true;
 
-        } else{
-            if (deltaY > Gdx.graphics.getHeight() / 12 && !heightIncreased) {
-                gameScreen.increaseCamFloorLevel();
-                heightIncreased = true;
-            } else if (deltaY < -Gdx.graphics.getHeight() / 12 && !heightIncreased) {
-                gameScreen.decreaseCamFloorLevel();
-                heightIncreased = true;
-            }
 
-        }
+            gameScreen.setCamHeight(deltaY);
+
+
+
         lastScreenX = screenX;
         lastScreenY = screenY;
         return true;
