@@ -1,5 +1,6 @@
 package com.mygdx.game.Screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -41,16 +42,36 @@ public class MyInputProcessor implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         startX = screenX;
         startY = screenY;
+        lastScreenX = screenX;
+        lastScreenY = screenY;
         isDragging = true;
+        heightIncreased = false;
+        rotating = false;
+
         return true;
     }
 
+    float lastScreenX;
+    float lastScreenY;
+    boolean heightIncreased = false;
+    boolean rotating = false;
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (!isDragging) return false;
-        float deltaX = -(screenX - startX) * camera.fieldOfView / camera.viewportHeight;
-        float deltaY = (screenY - startY) * camera.fieldOfView / camera.viewportHeight;
-        gameScreen.rotateCam(deltaX);
+        float deltaX = -(screenX+1 - lastScreenX);
+        float deltaY = (screenY+1 - lastScreenY);
+
+            gameScreen.rotateCam(deltaX);
+            rotating = true;
+            heightIncreased = true;
+
+
+            gameScreen.setCamHeight(deltaY);
+
+
+
+        lastScreenX = screenX;
+        lastScreenY = screenY;
         return true;
     }
 
@@ -69,6 +90,8 @@ public class MyInputProcessor implements InputProcessor {
         isDragging = false;
         return true;
     }
+
+
 
 }
 

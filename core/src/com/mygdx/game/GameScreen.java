@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
 
 	public MyInputProcessor myInputProcessor;
 	static Array<ModelInstance> instances;
-	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,ground;
+	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,furniture;
 	final float SCALE = 0.125f;
 	public Environment environment;
 	
@@ -121,6 +121,7 @@ public class GameScreen implements Screen {
 		assets.load("floors/InteriorMiddleFloor.g3db",Model.class);
 		assets.load("floors/InteriorTopFloor.g3db",Model.class);
 		assets.load("floors/TopFloor.g3db",Model.class);
+		assets.load("floors/funciona.g3db",Model.class);
 		assets.finishLoading();
 
 		firstFloor = assets.<Model>get("floors/FirstFloor.g3db");
@@ -129,10 +130,11 @@ public class GameScreen implements Screen {
 		interiorMiddleFloor = assets.<Model>get("floors/InteriorMiddleFloor.g3db");
 		topFloor = assets.<Model>get("floors/TopFloor.g3db");
 		interiorTopFloor = assets.<Model>get("floors/InteriorTopFloor.g3db");
+		furniture = assets.<Model>get("floors/funciona.g3db");
 
 		ModelInstance aux = null;
 		ModelInstance aux2 = null;
-
+		ModelInstance aux3 = null;
 		Array<ModelInstance> floors = new Array<>();
 
 		Color[] colors = new Color[] {
@@ -172,7 +174,8 @@ public class GameScreen implements Screen {
 
 				aux2 = new ModelInstance(interiorMiddleFloor);
 				aux2.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
-
+				aux3 = new ModelInstance(furniture);
+				aux3.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i+0.25f,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
 
 				if(colorIterator>=colors.length)colorIterator = 0;
 
@@ -181,6 +184,7 @@ public class GameScreen implements Screen {
 
 				floors.add(aux);
 				floors.add(aux2);
+				instances.add(aux3);
 			}else if(i<floorNumber){
 				aux = new ModelInstance(topFloor);
 				aux.transform = new Matrix4(new Vector3(random_w*j,getFloorHeight()*i,random_d*j),new Quaternion(),new Vector3(SCALE,SCALE,SCALE));
@@ -192,6 +196,7 @@ public class GameScreen implements Screen {
 			}
 			instances.add(aux);
 			instances.add(aux2);
+
 		}
 		}
 
@@ -205,12 +210,11 @@ public class GameScreen implements Screen {
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
 	}
-
-
 	Vector3 tmp = new Vector3();
 
 	@Override
 	public void render (float delta) {
+		this.delta = delta;
 		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
 
@@ -297,23 +301,28 @@ public class GameScreen implements Screen {
 		return actual_d;
 	}
 
-	static final float CAM_PATH_RADIUS = 50f;
-	static final float CAM_HEIGHT = 8f;
+	static final float CAM_PATH_RADIUS = 100f;
+	static float cam_height = 8f;
+	static float target_height = 8f;
 	float camPathAngle = 0;
 
 	void updateTreeCamera(){
 		Vector3 camPosition = cam.position;
-		camPosition.set(CAM_PATH_RADIUS, CAM_HEIGHT, 0); //Move camera to default location on circle centered at origin
+		camPosition.set(CAM_PATH_RADIUS, cam_height, 0); //Move camera to default location on circle centered at origin
 		camPosition.rotate(Vector3.Y, camPathAngle); //Rotate the position to the angle you want. Rotating this vector about the Y axis is like walking along the circle in a counter-clockwise direction.
-		camPosition.add(new Vector3(getFloorWidth(),0,getFloorWidth())); //translate the circle from origin to tree center
+		camPosition.add(new Vector3(getFloorWidth()/2,0,getFloorWidth()/2)); //translate the circle from origin to tree center
 		cam.up.set(Vector3.Y); //Make sure camera is still upright, in case a previous calculation caused it to roll or pitch
-		cam.lookAt(new Vector3(getFloorWidth(),0,getFloorWidth()));
+		cam.lookAt(new Vector3(getFloorWidth()/2,cam_height,getFloorWidth()/2));
 		cam.update(); //Register the changes to the camera position and direction
+
+
 	}
 
 	public void rotateCam(float magnitude){
-		camPathAngle += magnitude;
+		camPathAngle += magnitude/10;
 	}
-
+	public void setCamHeight(float height){
+	cam_height += height/8;
+	}
 
 }
