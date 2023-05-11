@@ -74,17 +74,15 @@ public class PopupDialogScreen implements Screen {
         stage.addActor(dialog);
 
         switch (positions) {
-            case TOP_RIGHT: {
-                i = 0;
+            case TOP_RIGHT:i = 0;
                 break;
-            }
             case BOTTOM_RIGHT:i = 1;
                 break;
             case BOTTOM_LEFT:i = 2;
                 break;
             case TOP_LEFT:i = 3;
                 break;
-            case CENTER:;
+            case CENTER:
                 break;
         }
         if(i==null){
