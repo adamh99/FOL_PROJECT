@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Api.RetrofitInterface;
 
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,7 +22,7 @@ public class QuizManager {
     }
 
     public Response<Question[]> response = null;
-    public Question[] fetchQuestionsFromServer(){
+    public Question[] fetchQuestionsFromServer() throws IOException {
         retrofit=new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -29,7 +31,7 @@ public class QuizManager {
         retrofitInterface=retrofit.create(RetrofitInterface.class);
 
         Call<Question[]> call = retrofitInterface.fetchQuestions();
-        call.enqueue(new Callback<Question[]>() {
+       /* call.enqueue(new Callback<Question[]>() {
 
             @Override
             public void onResponse(Call<Question[]> call, Response<Question[]> response) {
@@ -44,10 +46,12 @@ public class QuizManager {
 
 
 
-        });
-
+        });*/
+        response = call.execute();
+        System.out.println(response.body()[0].toString()+"Ó´´OÓ");
 
         return response.body();
+
     }
 
     public void startQuiz(){

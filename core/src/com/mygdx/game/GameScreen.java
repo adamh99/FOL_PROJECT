@@ -53,17 +53,20 @@ public class GameScreen implements Screen {
 	ModelInstance debug3dcursor;
 	QuizManager qmanager;
 	MyFolGame game;
-	public GameScreen(MyFolGame game){
+	public GameScreen(MyFolGame game) throws IOException {
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		myInputProcessor = new MyInputProcessor(cam, this);
+
+
 		qmanager = new QuizManager();
 		qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
-		displayPopUpDialog("EXAMPLE MISSION","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
+
+		displayPopUpDialog("EXAMPLE MISSIóÓN","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
 
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);

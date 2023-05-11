@@ -15,6 +15,8 @@ import com.mygdx.game.GameScreen;
 import com.mygdx.game.MyFolGame;
 import com.mygdx.game.Settings.AssetLoader;
 
+import java.io.IOException;
+
 public class TitleScreen extends ApplicationAdapter implements Screen {
     private MyFolGame Game;
     private Stage stage;
@@ -54,7 +56,11 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         play_button.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Game.setScreen(new GameScreen(Game));
+                try {
+                    Game.setScreen(new GameScreen(Game));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } );
 

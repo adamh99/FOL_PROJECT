@@ -1,4 +1,7 @@
 package com.mygdx.game;
+
+import java.util.Arrays;
+
 public class Question {
     private String subject;
     private String title;
@@ -53,4 +56,13 @@ public class Question {
     public void setValidOption(String validOption) {
         this.validOption = validOption;
     }
+    @Override
+    public String toString() {
+        return "Subject: " + subject +
+                "\nTitle: " + title +
+                "\nInstruction: " + instruction +
+                "\nOptions: " + Arrays.toString(options) +
+                "\nValid Option: " + validOption;
+    }
+
 }

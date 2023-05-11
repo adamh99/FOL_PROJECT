@@ -93,7 +93,7 @@ public class UIFactory {
                 map.put("password",password);
 
                 Call<Void> call = retrofitInterface.executeSignup(map);
-                System.out.println("llamando");
+                //System.out.println("llamando");
                 call.enqueue(new Callback<Void>() {
 
                     @Override
@@ -120,7 +120,7 @@ public class UIFactory {
                                 @Override
                                 public void run () {
                                     Message.show("mail regex fail");
-                                    System.out.println("aaaaaaaaaaaaaaaaaaaaaa");
+                                    //System.out.println("aaaaaaaaaaaaaaaaaaaaaa");
                                 }
                             });
 
