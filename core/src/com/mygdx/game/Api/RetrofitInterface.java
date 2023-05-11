@@ -1,6 +1,7 @@
 package com.mygdx.game.Api;
 
 import com.google.gson.JsonObject;
+import com.mygdx.game.Question;
 
 import java.util.HashMap;
 
@@ -21,6 +22,10 @@ public interface RetrofitInterface {
 
     @POST ("/saveStats")
     Call<Void> executeSaveStats(@Body HashMap<String, Integer> map);
+
+    @POST ("/fetchQuestions")
+    Call<Question[]> fetchQuestions();
+
 
 
 }

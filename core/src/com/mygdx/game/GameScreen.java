@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -14,13 +13,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -49,14 +46,12 @@ public class GameScreen implements Screen {
 	public float delta;
 	
 	//DEBUG UI
-
 	BitmapFont debugFont;
 	SpriteBatch sb;
 
 	boolean loading;
-	
 	ModelInstance debug3dcursor;
-	
+	QuizManager qmanager;
 	MyFolGame game;
 	public GameScreen(MyFolGame game){
 		modelBatch = new ModelBatch();
@@ -64,7 +59,8 @@ public class GameScreen implements Screen {
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		myInputProcessor = new MyInputProcessor(cam, this);
-
+		qmanager = new QuizManager();
+		qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
 		displayPopUpDialog("EXAMPLE MISSION","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
