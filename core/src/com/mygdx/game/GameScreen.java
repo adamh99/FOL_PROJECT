@@ -205,10 +205,10 @@ public class GameScreen implements Screen {
 	}
 	public boolean popUp = false;
 	PopupDialogScreen popupscreen;
-	public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
+	/*public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
-	}
+	}*/
 	public void displayQuestionDialog(Question[] question, PopupDialogScreen.EnumClass.Positions positions){
 		popupscreen = new PopupDialogScreen(questions,this,positions.CENTER,stage);
 		popUp = true;

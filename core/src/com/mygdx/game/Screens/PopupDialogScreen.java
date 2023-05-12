@@ -31,6 +31,8 @@ public class PopupDialogScreen implements Screen {
     private Stage stage;
     private Skin skin = AssetLoader.skin;
     private String message,title,selectedOption;
+    String validOption ="";
+    boolean correct = false;
     private TextButton closeButton;
     TextButton buttonA,buttonB,buttonC;
     GameScreen underlying;
@@ -46,6 +48,7 @@ public class PopupDialogScreen implements Screen {
         this.message = question[0].getTitle();
         this.underlying = underlying;
         this.stage=stage;
+        this.validOption = question[0].getValidOption();
         Gdx.input.setInputProcessor(stage);
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         Integer i = null;
@@ -64,19 +67,23 @@ public class PopupDialogScreen implements Screen {
         dialog = new Dialog(title, skin);
         dialog.text(message);
         dialog.add();
-        dialog.button(buttonA, true);
-        dialog.button(buttonB, true);
-        dialog.button(buttonC, true);
+        dialog.button(buttonA);
+        dialog.button(buttonB);
+        dialog.button(buttonC);
         buttonA.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("buttonTOSTRING"+buttonA.getText().toString());
-                System.out.println(question[0].getValidOption());
-                    selectedOption= buttonA.getText().toString();
-                    if(selectedOption.equals(question[0].getValidOption())){
+                System.out.println("VALIDOPTIONCOJONE"+validOption);
+                selectedOption= buttonA.getText().toString();
+                System.out.println("EL IFFFFFF     "+selectedOption.equals(question[0].getValidOption()));
+                correct = selectedOption.equals(validOption);
+                    if(correct){
                         dialog.remove();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    }else {
+                        System.out.println("PUTAS");
                     }
                 }
 
@@ -107,7 +114,8 @@ public class PopupDialogScreen implements Screen {
                     if(selectedOption.equals(question[0].getValidOption())){
                         dialog.remove();
                         underlyingFinal.popUp= false;
-                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);                    }
+                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    }
 
 
             }
@@ -135,7 +143,7 @@ public class PopupDialogScreen implements Screen {
 
     }
 
-    public PopupDialogScreen(String title, String message, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+  /*  public PopupDialogScreen(String title, String message, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
 
 
         this.message = message;
@@ -191,7 +199,7 @@ public class PopupDialogScreen implements Screen {
         //dialog.setSize(300, 300);
 
 
-    }
+    }*/
 
     @Override
     public void show() {
