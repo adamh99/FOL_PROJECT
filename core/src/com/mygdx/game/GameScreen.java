@@ -44,7 +44,8 @@ public class GameScreen implements Screen {
 	
 	public CamControl camController;
 	public float delta;
-	
+
+	private Question[] questions;
 	//DEBUG UI
 	BitmapFont debugFont;
 	SpriteBatch sb;
@@ -62,18 +63,17 @@ public class GameScreen implements Screen {
 
 
 		qmanager = new QuizManager();
-		qmanager.fetchQuestionsFromServer();
+		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
-
-		displayPopUpDialog("EXAMPLE MISSIóÓN","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
+		displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
 
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
 		cam.far = 1000f;
 		cam.update();
-		
+
 		loading = true;
 		//controlls
 		try {
@@ -207,6 +207,10 @@ public class GameScreen implements Screen {
 	PopupDialogScreen popupscreen;
 	public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
+		popUp = true;
+	}
+	public void displayQuestionDialog(Question[] question, PopupDialogScreen.EnumClass.Positions positions){
+		popupscreen = new PopupDialogScreen(questions,this,positions.CENTER,stage);
 		popUp = true;
 	}
 	Vector3 tmp = new Vector3();
