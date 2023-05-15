@@ -28,6 +28,8 @@ import com.mygdx.game.Screens.PopupDialogScreen;
 import java.awt.AWTException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen implements Screen {
 	//features a test 3d world
@@ -45,7 +47,7 @@ public class GameScreen implements Screen {
 	public CamControl camController;
 	public float delta;
 
-	private Question[] questions;
+	private List<Question> questions;
 	//DEBUG UI
 	BitmapFont debugFont;
 	SpriteBatch sb;
@@ -61,12 +63,10 @@ public class GameScreen implements Screen {
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		myInputProcessor = new MyInputProcessor(cam, this);
 
-
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
-		displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
 
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
@@ -205,13 +205,8 @@ public class GameScreen implements Screen {
 	}
 	public boolean popUp = false;
 	PopupDialogScreen popupscreen;
-	/*public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
-		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
-		popUp = true;
-	}*/
-	public void displayQuestionDialog(Question[] question, PopupDialogScreen.EnumClass.Positions positions){
-		popupscreen = new PopupDialogScreen(questions,this,positions.CENTER,stage);
-		popUp = true;
+	public void StartQuiz(PopupDialogScreen screen){
+
 	}
 	Vector3 tmp = new Vector3();
 

@@ -42,14 +42,14 @@ public class PopupDialogScreen implements Screen {
     float width = Gdx.graphics.getWidth();
 
     private Question[] question;
-    public PopupDialogScreen(final Question[] question, GameScreen underlying, EnumClass.Positions positions, Stage stage) {
+    public PopupDialogScreen(final List<Question> question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
-        this.title = question[0].getSubject();
-        this.message = question[0].getTitle();
+        this.title = question.get(0).getSubject();
+        this.message = question.get(0).getTitle();
         this.underlying = underlying;
         this.stage=stage;
-        this.validOption = question[0].getValidOption();
+        this.validOption = question.get(0).getValidOption();
         Gdx.input.setInputProcessor(stage);
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         Integer i = null;
@@ -60,9 +60,9 @@ public class PopupDialogScreen implements Screen {
         //position
 
 
-        buttonA = new TextButton(question[0].getOptions()[0],skin);
-        buttonB = new TextButton(question[0].getOptions()[1],skin);
-        buttonC = new TextButton(question[0].getOptions()[2],skin);
+        buttonA = new TextButton(question.get(0).getOptions()[0],skin);
+        buttonB = new TextButton(question.get(0).getOptions()[1],skin);
+        buttonC = new TextButton(question.get(0).getOptions()[2],skin);
 
         // create and add the dialog to the stage
         dialog = new Dialog(title, skin);
@@ -90,7 +90,7 @@ public class PopupDialogScreen implements Screen {
                     if(correct){
                         dialog.remove();
                         underlyingFinal.popUp= false;
-                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                        Gdx.input.setInputProcessor(stage);
                         AssetLoader.rightsound.play();
                     }else{
                         AssetLoader.wrongsound.play();
