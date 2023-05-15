@@ -6,8 +6,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -18,7 +20,13 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Screens.MyInputProcessor;
@@ -65,6 +73,7 @@ public class GameScreen implements Screen {
 		qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
+		initSideMenu();
 
 		displayPopUpDialog("EXAMPLE MISSIóÓN","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
 
@@ -224,6 +233,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
 				(Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
+
 		if (loading && assets.update())
 			loadInstances();
 		try {
@@ -247,6 +257,7 @@ public class GameScreen implements Screen {
 		}
 		if(!loading){
 			updateTreeCamera();
+			updateMenuSlide(delta);
 		}
 
 	}
@@ -323,5 +334,60 @@ public class GameScreen implements Screen {
 	public void setCamHeight(float height){
 	cam_height += height/8;
 	}
+
+	private Texture buttonTexture;
+	private Texture menuTexture;
+	private boolean isMenuOpen;
+	private float menuX;
+	private Table menuTable;
+
+	public void initSideMenu() {
+		buttonTexture = new Texture("badlogic.jpg");
+		menuTexture = new Texture("badlogic.jpg");
+		isMenuOpen = false;
+		createUI();
+	}
+	private void createUI() {
+		// Create the button
+		Image buttonImage = new Image(buttonTexture);
+		buttonImage.setPosition(Gdx.graphics.getWidth() - buttonTexture.getWidth(),
+				Gdx.graphics.getHeight() - buttonTexture.getHeight());
+		buttonImage.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				toggleMenu();
+				System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			}
+		});
+
+		// Create the sliding menu
+
+		TextureRegion menuRegion = new TextureRegion(menuTexture);
+		TextureRegionDrawable menuDrawable = new TextureRegionDrawable(menuRegion);
+		menuTable = new Table();
+		menuTable.setBackground(menuDrawable);
+		menuTable.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+		menuTable.setPosition(Gdx.graphics.getWidth(), 0);
+
+		stage.addActor(buttonImage);
+		stage.addActor(menuTable);
+	}
+	private void toggleMenu() {
+		isMenuOpen = !isMenuOpen;
+	}
+
+	private void updateMenuSlide(float delta) {
+		float targetX = isMenuOpen ? Gdx.graphics.getWidth() / 2 - menuTable.getWidth() : Gdx.graphics.getWidth();
+		float menuSpeed = 500;
+
+		float newX = menuTable.getX() + (targetX - menuTable.getX()) * menuSpeed * delta;
+		if (Math.abs(targetX - newX) < 1) {
+			newX = targetX;
+		}
+
+		menuTable.setPosition(newX, 0);
+	}
+
+
 
 }
