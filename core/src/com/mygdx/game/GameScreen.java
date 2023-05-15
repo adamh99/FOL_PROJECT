@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
 	public CamControl camController;
 	public float delta;
 
-	private List<Question> questions;
+	private Question[] questions;
 	//DEBUG UI
 	BitmapFont debugFont;
 	SpriteBatch sb;
@@ -67,6 +67,7 @@ public class GameScreen implements Screen {
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
+		qmanager.startQuiz(questions,this,stage);
 
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);

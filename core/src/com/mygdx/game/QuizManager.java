@@ -7,6 +7,7 @@ import com.mygdx.game.Screens.PopupDialogScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,7 +30,7 @@ public class QuizManager {
     }
 
     public Response<Question[]> response = null;
-    public List<Question> fetchQuestionsFromServer() throws IOException {
+    public Question[] fetchQuestionsFromServer() throws IOException {
         retrofit=new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -56,14 +57,12 @@ public class QuizManager {
         });*/
         response = call.execute();
         //System.out.println("RESPONSE: "+response.body()[0].toString());
-        questions = questionsBySubject(response.body(),"CONCEPTOS BÁSICOS SOBRE PREVENCIÓN DE RIESGOS LABORALES");
-        return questions;
+        return response.body();
     }
-
-    public void startQuiz(){
-        while (!questions.isEmpty()){
+    public void startQuiz(Question[] questions,GameScreen underlying,Stage stage){
+        for (int i = 0;i<questions.length;i++){
             //RECORRE LAS QUESTIONS
-            //displayQuestionDialog();
+            displayQuestionDialog(questions[i],underlying, PopupDialogScreen.EnumClass.Positions.CENTER,stage);
         }
     }
 
@@ -87,7 +86,8 @@ public class QuizManager {
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
 	}*/
-    public void displayQuestionDialog(GameScreen underlying,PopupDialogScreen.EnumClass.Positions positions, Stage stage){
-        popupDialogScreen = new PopupDialogScreen(questions,underlying,positions.CENTER,stage);
+    public void displayQuestionDialog(Question q,GameScreen underlying,PopupDialogScreen.EnumClass.Positions positions, Stage stage){
+        popupDialogScreen = new PopupDialogScreen(q,underlying,positions.CENTER,stage);
+        popupDialogScreen.show();
     }
 }
