@@ -56,6 +56,7 @@ public class GameScreen implements Screen {
 	//DEBUG UI
 	BitmapFont debugFont;
 	SpriteBatch sb;
+	Question[] questions;
 
 	boolean loading;
 	ModelInstance debug3dcursor;
@@ -75,8 +76,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(myInputProcessor);
 		initSideMenu();
 
-		displayPopUpDialog("EXAMPLE MISSIóÓN","Example text,Example text,Example text,Example text,Example text,Example text,\n	Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,Example text,", PopupDialogScreen.EnumClass.Positions.BOTTOM_LEFT);
-
+		displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
@@ -214,7 +214,7 @@ public class GameScreen implements Screen {
 	}
 	public boolean popUp = false;
 	PopupDialogScreen popupscreen;
-	public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
+	/*public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions, ){
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
 	}*/
