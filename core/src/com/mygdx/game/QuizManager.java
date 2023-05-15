@@ -48,7 +48,7 @@ public class QuizManager {
 
         });*/
         response = call.execute();
-        System.out.println(response.body()[0].toString()+"Ó´´OÓ");
+        System.out.println("RESPONSE: "+response.body()[0].toString());
 
         return response.body();
 

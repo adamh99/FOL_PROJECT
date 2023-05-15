@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
 
 
 		qmanager = new QuizManager();
-		qmanager.fetchQuestionsFromServer();
+		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
 		initSideMenu();
@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
 		cam.near = 0.15f;
 		cam.far = 1000f;
 		cam.update();
-		
+
 		loading = true;
 		//controlls
 		try {
@@ -217,6 +217,10 @@ public class GameScreen implements Screen {
 	public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions){
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
 		popUp = true;
+	}*/
+	public void displayQuestionDialog(Question[] question, PopupDialogScreen.EnumClass.Positions positions){
+		popupscreen = new PopupDialogScreen(questions,this,positions.CENTER,stage);
+		popUp = true;
 	}
 	Vector3 tmp = new Vector3();
 
@@ -232,7 +236,6 @@ public class GameScreen implements Screen {
 		cam.position.add(tmp);}
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
 				(Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
-
 
 		if (loading && assets.update())
 			loadInstances();
