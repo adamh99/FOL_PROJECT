@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.GameScreen;
+import com.mygdx.game.Message;
 import com.mygdx.game.Question;
 import com.mygdx.game.Settings.AssetLoader;
 
@@ -66,24 +67,34 @@ public class PopupDialogScreen implements Screen {
         // create and add the dialog to the stage
         dialog = new Dialog(title, skin);
         dialog.text(message);
-        dialog.add();
-        dialog.button(buttonA);
-        dialog.button(buttonB);
-        dialog.button(buttonC);
+        dialog.getContentTable().row();
+        dialog.getContentTable().add(buttonA);
+        dialog.getContentTable().row();
+        dialog.getContentTable().add(buttonB);
+        dialog.getContentTable().row();
+        dialog.getContentTable().add(buttonC);
+
+        //dialog.button(buttonA);
+        //dialog.button(buttonB);
+        //dialog.button(buttonC);
         buttonA.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("buttonTOSTRING"+buttonA.getText().toString());
-                System.out.println("VALIDOPTIONCOJONE"+validOption);
                 selectedOption= buttonA.getText().toString();
+                /*
+                System.out.println("SelectedOption "+selectedOption);
+                System.out.println("ValidOption "+validOption);
                 System.out.println("EL IFFFFFF     "+selectedOption.equals(question[0].getValidOption()));
+                */
                 correct = selectedOption.equals(validOption);
                     if(correct){
                         dialog.remove();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
-                    }else {
-                        System.out.println("PUTAS");
+                        AssetLoader.rightsound.play();
+                    }else{
+                        AssetLoader.wrongsound.play();
+
                     }
                 }
 
@@ -92,32 +103,44 @@ public class PopupDialogScreen implements Screen {
         buttonB.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                    System.out.println(buttonB.toString());
-                    System.out.println(question[0].getValidOption());
-                    selectedOption= buttonB.toString();
-                    if(selectedOption.equals(question[0].getValidOption())){
+                selectedOption= buttonB.getText().toString();
+                /*
+                System.out.println("SelectedOption "+selectedOption);
+                System.out.println("ValidOption "+validOption);
+                System.out.println("EL IFFFFFF     "+selectedOption.equals(question[0].getValidOption()));
+                */
+                correct = selectedOption.equals(validOption);
+                if(correct){
                         dialog.remove();
+                        AssetLoader.rightsound.play();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
-                    }
+                }else{
+                    AssetLoader.wrongsound.play();
+
                 }
+            }
 
 
         });
         buttonC.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                    System.out.println(buttonC.toString());
-                    System.out.println(question[0].getValidOption());
-                    selectedOption= buttonC.toString();
-                    if(selectedOption.equals(question[0].getValidOption())){
-                        dialog.remove();
-                        underlyingFinal.popUp= false;
-                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
-                    }
-
-
+                selectedOption= buttonC.getText().toString();
+                /*
+                System.out.println("SelectedOption "+selectedOption);
+                System.out.println("ValidOption "+validOption);
+                System.out.println("EL IFFFFFF     "+selectedOption.equals(question[0].getValidOption()));
+                */
+                correct = selectedOption.equals(validOption);
+                if(correct){
+                    dialog.remove();
+                    AssetLoader.rightsound.play();
+                    underlyingFinal.popUp= false;
+                    Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                }else{
+                    AssetLoader.wrongsound.play();
+                }
             }
         });
 
