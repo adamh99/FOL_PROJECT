@@ -1,17 +1,14 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.Screens.PopupDialogScreen;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,7 +27,7 @@ public class QuizManager {
     }
 
     public Response<Question[]> response = null;
-    public Question[] fetchQuestionsFromServer() throws IOException {
+    public Question[] fetchQuestionsFromServer() throws IOException, InterruptedException {
         retrofit=new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -39,6 +36,7 @@ public class QuizManager {
         retrofitInterface=retrofit.create(RetrofitInterface.class);
 
         Call<Question[]> call = retrofitInterface.fetchQuestions();
+
        /* call.enqueue(new Callback<Question[]>() {
 
             @Override
@@ -56,14 +54,18 @@ public class QuizManager {
 
         });*/
         response = call.execute();
+
         //System.out.println("RESPONSE: "+response.body()[0].toString());
         return response.body();
     }
     public void startQuiz(Question[] questions,GameScreen underlying,Stage stage){
+        underlying.popUp = true;
         for (int i = 0;i<questions.length;i++){
             //RECORRE LAS QUESTIONS
-            displayQuestionDialog(questions[i],underlying, PopupDialogScreen.EnumClass.Positions.CENTER,stage);
+           // displayQuestionDialog(questions[i],underlying, PopupDialogScreen.EnumClass.Positions.CENTER,stage);
+            underlying.currentQuiz.add(questions[i]);
         }
+        underlying.currentPopUp = new PopupDialogScreen(underlying.currentQuiz.pop(),underlying,PopupDialogScreen.EnumClass.Positions.CENTER,stage);
     }
 
     public List<Question> questionsBySubject(Question[] questions,String subject){
@@ -88,6 +90,8 @@ public class QuizManager {
 	}*/
     public void displayQuestionDialog(Question q,GameScreen underlying,PopupDialogScreen.EnumClass.Positions positions, Stage stage){
         popupDialogScreen = new PopupDialogScreen(q,underlying,positions.CENTER,stage);
+
+        underlying.popUp = true;
         popupDialogScreen.show();
     }
 }

@@ -40,8 +40,6 @@ public class PopupDialogScreen implements Screen {
     public final List<Vector2> VECTORS = new ArrayList<>();
     float height = Gdx.graphics.getHeight();
     float width = Gdx.graphics.getWidth();
-
-    private Question[] question;
     public PopupDialogScreen(Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
@@ -92,6 +90,7 @@ public class PopupDialogScreen implements Screen {
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(stage);
                         AssetLoader.rightsound.play();
+
                     }else{
                         AssetLoader.wrongsound.play();
 
@@ -264,6 +263,7 @@ public class PopupDialogScreen implements Screen {
 
     @Override
     public void dispose() {
+        underlying.popUp = false;
     }
 
     public TextButton getCloseButton() {

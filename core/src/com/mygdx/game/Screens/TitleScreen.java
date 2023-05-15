@@ -60,6 +60,8 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
                     Game.setScreen(new GameScreen(Game));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         } );

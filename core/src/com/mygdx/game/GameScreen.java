@@ -28,8 +28,7 @@ import com.mygdx.game.Screens.PopupDialogScreen;
 import java.awt.AWTException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
 public class GameScreen implements Screen {
 	//features a test 3d world
@@ -56,7 +55,8 @@ public class GameScreen implements Screen {
 	ModelInstance debug3dcursor;
 	QuizManager qmanager;
 	MyFolGame game;
-	public GameScreen(MyFolGame game) throws IOException {
+	public GameScreen(MyFolGame game) throws IOException, InterruptedException {
+		currentQuiz = new Stack<>();
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
 		this.game = game;
@@ -65,6 +65,7 @@ public class GameScreen implements Screen {
 
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
+
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
 		qmanager.startQuiz(questions,this,stage);
@@ -205,10 +206,9 @@ public class GameScreen implements Screen {
 		loading = false;
 	}
 	public boolean popUp = false;
-	PopupDialogScreen popupscreen;
-	public void StartQuiz(PopupDialogScreen screen){
+	public Stack<Question> currentQuiz;
+	public PopupDialogScreen currentPopUp = null;
 
-	}
 	Vector3 tmp = new Vector3();
 
 	@Override
@@ -242,9 +242,9 @@ public class GameScreen implements Screen {
 		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
 		sb.end();
 
-		if(popUp){
-			popupscreen.render(delta);
-		}
+		if(popUp && currentPopUp !=null){
+			currentPopUp.render(delta);
+				}
 		if(!loading){
 			updateTreeCamera();
 		}
