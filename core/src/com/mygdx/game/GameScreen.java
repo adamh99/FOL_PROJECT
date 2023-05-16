@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(myInputProcessor);
 		qmanager.startQuiz(questions,this,stage);
 
-		displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
+		//displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
@@ -250,7 +250,7 @@ public class GameScreen implements Screen {
 		sb.end();
 
 		if(popUp){
-			popupscreen.render(delta);
+			currentPopUp.render(delta);
 		}
 		if(!loading){
 			updateTreeCamera();
