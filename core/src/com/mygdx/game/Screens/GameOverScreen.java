@@ -85,6 +85,8 @@ public class GameOverScreen implements Screen {
                     ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(Game));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
