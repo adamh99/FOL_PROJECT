@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.GameScreen;
 import com.mygdx.game.MyFolGame;
+import com.mygdx.game.Screens.PreferencesScreen;
 import com.mygdx.game.Settings.AssetLoader;
 
 import java.io.IOException;
@@ -28,32 +29,37 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         buildMenuTable();
     }
 
-    private TextButton register_button, login_button,newGame_button,play_button;
+    private TextButton register_button, login_button, newGame_button, play_button, settings_button;
 
-    private void buildMenuTable(){
+    private void buildMenuTable() {
         final Table table = new Table();
         table.setFillParent(true);
 
         Label userNameLabel = new Label("UsernameExample", AssetLoader.skin);
-        userNameLabel.setPosition(Gdx.graphics.getWidth()*0.05f,Gdx.graphics.getHeight()*0.95f);
+        userNameLabel.setPosition(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getHeight() * 0.95f);
 
 
         login_button = new TextButton("Join", AssetLoader.skin);
-        login_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
-        login_button.setPosition(Gdx.graphics.getWidth()*0.15f,Gdx.graphics.getHeight()*0.95f);
+        login_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
+        login_button.setPosition(Gdx.graphics.getWidth() * 0.15f, Gdx.graphics.getHeight() * 0.95f);
 
         register_button = new TextButton("Register", AssetLoader.skin);
-        register_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
-        register_button.setPosition(Gdx.graphics.getWidth()*0.95f,Gdx.graphics.getHeight()*0.95f);
+        register_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
+        register_button.setPosition(Gdx.graphics.getWidth() * 0.95f, Gdx.graphics.getHeight() * 0.95f);
 
         newGame_button = new TextButton("New Game", AssetLoader.skin);
-        newGame_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
-        newGame_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.45f);
+        newGame_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
+        newGame_button.setPosition(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.45f);
+
+        settings_button = new TextButton("Settings", AssetLoader.skin);
+        settings_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
+        settings_button.setPosition(Gdx.graphics.getWidth() * 0.4f, Gdx.graphics.getHeight() * 0.35f);
+
 
         play_button = new TextButton("PLAY", AssetLoader.skin);
-        play_button.setSize(Gdx.graphics.getWidth()*0.05f, Gdx.graphics.getWidth()*0.025f);
-        play_button.setPosition(Gdx.graphics.getWidth()*0.5f,Gdx.graphics.getHeight()*0.5f);
-        play_button.addListener( new ClickListener() {
+        play_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
+        play_button.setPosition(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+        play_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 try {
@@ -61,8 +67,11 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
+
             }
-        } );
+        });
+
 
         //afegir actorsº
         stage.addActor(userNameLabel);
@@ -70,18 +79,28 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
         stage.addActor(register_button);
         stage.addActor(play_button);
         stage.addActor(newGame_button);
-        register_button.addListener( new ClickListener() {
+        stage.addActor(settings_button);
+        register_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Game.setScreen(new RegisterScreen(Game));
             }
-        } );
-        login_button.addListener( new ClickListener() {
+        });
+        login_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Game.setScreen(new LoginScreen(Game));
             }
-        } );
+        });
+
+        settings_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Game.setScreen(new PreferencesScreen(Game));
+
+
+            }
+        });
 
     }
 
