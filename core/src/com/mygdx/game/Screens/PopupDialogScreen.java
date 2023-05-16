@@ -40,16 +40,15 @@ public class PopupDialogScreen implements Screen {
     public final List<Vector2> VECTORS = new ArrayList<>();
     float height = Gdx.graphics.getHeight();
     float width = Gdx.graphics.getWidth();
-
-    private Question[] question;
-    public PopupDialogScreen(final Question[] question, GameScreen underlying, EnumClass.Positions positions, Stage stage) {
+    public PopupDialogScreen(Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
-        this.title = question[0].getSubject();
-        this.message = question[0].getTitle();
+        this.title = question.getSubject();
+        this.message = question.getTitle();
         this.underlying = underlying;
+        this.underlying.popUp = true;
         this.stage=stage;
-        this.validOption = question[0].getValidOption();
+        this.validOption = question.getValidOption();
         Gdx.input.setInputProcessor(stage);
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         Integer i = null;
@@ -60,9 +59,9 @@ public class PopupDialogScreen implements Screen {
         //position
 
 
-        buttonA = new TextButton(question[0].getOptions()[0],skin);
-        buttonB = new TextButton(question[0].getOptions()[1],skin);
-        buttonC = new TextButton(question[0].getOptions()[2],skin);
+        buttonA = new TextButton(question.getOptions()[0],skin);
+        buttonB = new TextButton(question.getOptions()[1],skin);
+        buttonC = new TextButton(question.getOptions()[2],skin);
 
         // create and add the dialog to the stage
         dialog = new Dialog(title, skin);
@@ -90,8 +89,11 @@ public class PopupDialogScreen implements Screen {
                     if(correct){
                         dialog.remove();
                         underlyingFinal.popUp= false;
-                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                        Gdx.input.setInputProcessor(stage);
                         AssetLoader.rightsound.play();
+                        if(!underlyingFinal.currentQuiz.empty()) {
+                            underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                        }
                     }else{
                         AssetLoader.wrongsound.play();
 
@@ -115,9 +117,11 @@ public class PopupDialogScreen implements Screen {
                         AssetLoader.rightsound.play();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    if(!underlyingFinal.currentQuiz.empty()) {
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                    }
                 }else{
                     AssetLoader.wrongsound.play();
-
                 }
             }
 
@@ -138,6 +142,10 @@ public class PopupDialogScreen implements Screen {
                     AssetLoader.rightsound.play();
                     underlyingFinal.popUp= false;
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    if(!underlyingFinal.currentQuiz.empty()) {
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                    }
+
                 }else{
                     AssetLoader.wrongsound.play();
                 }
@@ -158,6 +166,7 @@ public class PopupDialogScreen implements Screen {
         }
         if(i==null){
             dialog.show(stage);
+
         }else{
             dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
         }
@@ -263,7 +272,7 @@ public class PopupDialogScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
+        underlying.popUp = false;
     }
 
     public TextButton getCloseButton() {
