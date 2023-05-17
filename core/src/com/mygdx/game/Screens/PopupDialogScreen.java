@@ -17,8 +17,10 @@ import com.mygdx.game.Message;
 import com.mygdx.game.Question;
 import com.mygdx.game.Settings.AssetLoader;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class PopupDialogScreen implements Screen {
 
@@ -173,14 +175,38 @@ public class PopupDialogScreen implements Screen {
 
     }
 
-  /*  public PopupDialogScreen(String title, String message, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+    public PopupDialogScreen(String title, Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
 
-
-        this.message = message;
+        //this.message = message;
         this.underlying = underlying;
         this.stage=stage;
         Gdx.input.setInputProcessor(stage);
+        Stack<String> subjects = new Stack<>();
+        for(int i= 0; i<questions.length;i++){
+            subjects.push(questions[i].getSubject());
 
+            //SEPARA TODOS LOS SUBJECTS SINÓ MIRA CHATGPT
+        }
+        String[] uniqueStrings = new String[strings.length];
+        int index = 0;
+
+        for (String str : strings) {
+            boolean isDuplicate = false;
+
+            // Check if the string already exists in the uniqueStrings array
+            for (int i = 0; i < index; i++) {
+                if (str.equals(uniqueStrings[i])) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+
+            // If it's not a duplicate, add it to the uniqueStrings array
+            if (!isDuplicate) {
+                uniqueStrings[index] = str;
+                index++;
+            }
+        }
 
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         VECTORS.add(new Vector2(width,height));
@@ -229,7 +255,7 @@ public class PopupDialogScreen implements Screen {
         //dialog.setSize(300, 300);
 
 
-    }*/
+    }
 
     @Override
     public void show() {

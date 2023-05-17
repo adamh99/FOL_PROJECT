@@ -36,7 +36,6 @@ public class GameScreen implements Screen {
 
 	Stage stage;
 	public PerspectiveCamera cam;
-
 	public MyInputProcessor myInputProcessor;
 	static Array<ModelInstance> instances;
 	Model firstFloor,interiorfirstFloor,middleFloor,interiorMiddleFloor,topFloor,interiorTopFloor,furniture;
@@ -45,7 +44,6 @@ public class GameScreen implements Screen {
 	
 	public CamControl camController;
 	public float delta;
-
 	private Question[] questions;
 	//DEBUG UI
 	BitmapFont debugFont;
@@ -55,6 +53,8 @@ public class GameScreen implements Screen {
 	ModelInstance debug3dcursor;
 	QuizManager qmanager;
 	MyFolGame game;
+	public Stack<Question> currentQuiz;
+
 	public GameScreen(MyFolGame game) throws IOException, InterruptedException {
 		currentQuiz = new Stack<>();
 		modelBatch = new ModelBatch();
@@ -68,7 +68,8 @@ public class GameScreen implements Screen {
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
-		qmanager.startQuiz(questions,this,stage);
+		qmanager.quizzScreen(questions,this,stage);
+		//qmanager.startQuiz(questions,this,stage);
 
 		//displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
 		cam.position.set(1f, 10f, 1f);
@@ -207,7 +208,7 @@ public class GameScreen implements Screen {
 		loading = false;
 	}
 	public boolean popUp = false;
-	public Stack<Question> currentQuiz;
+
 	public PopupDialogScreen currentPopUp = null;
 	/*public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions, ){
 		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
@@ -253,6 +254,7 @@ public class GameScreen implements Screen {
 			currentPopUp.render(delta);
 		}
 		if(!loading){
+
 			updateTreeCamera();
 		}
 

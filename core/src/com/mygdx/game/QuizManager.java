@@ -67,6 +67,11 @@ public class QuizManager {
         }
         underlying.currentPopUp = new PopupDialogScreen(underlying.currentQuiz.pop(),underlying,PopupDialogScreen.EnumClass.Positions.CENTER,stage);
     }
+    public void quizzScreen(Question[] questions,GameScreen underlying,Stage stage){
+        underlying.popUp = true;
+
+        underlying.currentPopUp = new PopupDialogScreen("QUIZZ",questions,underlying,PopupDialogScreen.EnumClass.Positions.TOP_RIGHT,stage);
+    }
 
     public List<Question> questionsBySubject(Question[] questions,String subject){
         List<Question> subjectQuestions = new ArrayList<>();
@@ -89,7 +94,7 @@ public class QuizManager {
 		popUp = true;
 	}*/
     public void displayQuestionDialog(Question q,GameScreen underlying,PopupDialogScreen.EnumClass.Positions positions, Stage stage){
-        System.out.println("DISPLAYQUESTIONDIALOG "+q.toString());
+        //System.out.println("DISPLAYQUESTIONDIALOG "+q.toString());
         popupDialogScreen = new PopupDialogScreen(q,underlying,positions.CENTER,stage);
 
         underlying.popUp = true;
