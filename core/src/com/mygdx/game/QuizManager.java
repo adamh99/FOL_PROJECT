@@ -89,6 +89,7 @@ public class QuizManager {
 		popUp = true;
 	}*/
     public void displayQuestionDialog(Question q,GameScreen underlying,PopupDialogScreen.EnumClass.Positions positions, Stage stage){
+        System.out.println("DISPLAYQUESTIONDIALOG "+q.toString());
         popupDialogScreen = new PopupDialogScreen(q,underlying,positions.CENTER,stage);
 
         underlying.popUp = true;

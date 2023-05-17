@@ -43,6 +43,7 @@ public class PopupDialogScreen implements Screen {
     public PopupDialogScreen(Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
+        System.out.println("POPUPDIALOGSCREEN "+question.toString());
         this.title = question.getSubject();
         this.message = question.getTitle();
         this.underlying = underlying;
@@ -56,7 +57,6 @@ public class PopupDialogScreen implements Screen {
         VECTORS.add(new Vector2(width*0.001f,height*0.01f));
         VECTORS.add(new Vector2(width*0.001f,height));
         //position
-
 
         buttonA = new TextButton(question.getOptions()[0],skin);
         buttonB = new TextButton(question.getOptions()[1],skin);
@@ -72,9 +72,6 @@ public class PopupDialogScreen implements Screen {
         dialog.getContentTable().row();
         dialog.getContentTable().add(buttonC);
 
-        //dialog.button(buttonA);
-        //dialog.button(buttonB);
-        //dialog.button(buttonC);
         buttonA.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -155,11 +152,11 @@ public class PopupDialogScreen implements Screen {
             case CENTER:
                 break;
         }
-        if(i==null){
-            dialog.show(stage);
+        if(i!=null){
+            dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
 
         }else{
-            dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
+            dialog.show(stage);
         }
 
         stage.addActor(dialog);
