@@ -47,6 +47,7 @@ public class PopupDialogScreen implements Screen {
         this.title = question.getSubject();
         this.message = question.getTitle();
         this.underlying = underlying;
+        this.underlying.popUp = true;
         this.stage=stage;
         this.validOption = question.getValidOption();
         Gdx.input.setInputProcessor(stage);
@@ -87,7 +88,9 @@ public class PopupDialogScreen implements Screen {
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(stage);
                         AssetLoader.rightsound.play();
-
+                        if(!underlyingFinal.currentQuiz.empty()) {
+                            underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                        }
                     }else{
                         AssetLoader.wrongsound.play();
 
@@ -111,9 +114,11 @@ public class PopupDialogScreen implements Screen {
                         AssetLoader.rightsound.play();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    if(!underlyingFinal.currentQuiz.empty()) {
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                    }
                 }else{
                     AssetLoader.wrongsound.play();
-
                 }
             }
 
@@ -134,6 +139,10 @@ public class PopupDialogScreen implements Screen {
                     AssetLoader.rightsound.play();
                     underlyingFinal.popUp= false;
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    if(!underlyingFinal.currentQuiz.empty()) {
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                    }
+
                 }else{
                     AssetLoader.wrongsound.play();
                 }

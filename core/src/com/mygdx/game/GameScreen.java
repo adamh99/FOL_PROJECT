@@ -63,12 +63,14 @@ public class GameScreen implements Screen {
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		myInputProcessor = new MyInputProcessor(cam, this);
 
+
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
 		qmanager.startQuiz(questions,this,stage);
 
+		//displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
 		cam.position.set(1f, 10f, 1f);
 		cam.lookAt(0,0,0);
 		cam.near = 0.15f;
@@ -207,6 +209,12 @@ public class GameScreen implements Screen {
 	public boolean popUp = false;
 	public Stack<Question> currentQuiz;
 	public PopupDialogScreen currentPopUp = null;
+	/*public void displayPopUpDialog(String title, String message, PopupDialogScreen.EnumClass.Positions positions, ){
+		popupscreen = new PopupDialogScreen(title,message,this,positions.CENTER,stage);
+		popUp = true;
+	}*/
+
+
 
 	Vector3 tmp = new Vector3();
 
@@ -241,9 +249,9 @@ public class GameScreen implements Screen {
 		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
 		sb.end();
 
-		if(popUp && currentPopUp !=null){
+		if(popUp){
 			currentPopUp.render(delta);
-				}
+		}
 		if(!loading){
 			updateTreeCamera();
 		}
