@@ -23,9 +23,7 @@ public class LoginScreen implements Screen {
 
     }
 
-    private TextField username_field,email_field,password_field,password_confirmation_field;
-    private TextButton register_button,return_button;
-    Actor bckgrndTouchCatcher;
+
     private void buildRegisterTable() {
 
 

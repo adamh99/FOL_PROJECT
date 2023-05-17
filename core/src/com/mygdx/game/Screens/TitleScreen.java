@@ -53,7 +53,7 @@ public class TitleScreen extends ApplicationAdapter implements Screen {
 
         settings_button = new TextButton("Settings", AssetLoader.skin);
         settings_button.setSize(Gdx.graphics.getWidth() * 0.05f, Gdx.graphics.getWidth() * 0.025f);
-        settings_button.setPosition(Gdx.graphics.getWidth() * 0.4f, Gdx.graphics.getHeight() * 0.35f);
+        settings_button.setPosition(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.40f);
 
 
         play_button = new TextButton("PLAY", AssetLoader.skin);
