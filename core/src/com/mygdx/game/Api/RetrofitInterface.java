@@ -21,7 +21,13 @@ public interface RetrofitInterface {
     Call<SettingsResult> getGameSettings(@Body HashMap<String, String> map);
 
     @POST ("/saveStats")
-    Call<Void> executeSaveStats(@Body HashMap<String, Integer> map);
+    Call<Void> executeSaveStats(@Body HashMap<String, String> map);
+
+    @POST ("/saveStats")
+    Call<Void> executeSaveUser(@Body HashMap<String, String> map);
+
+    @POST ("/saveGameTime")
+    Call<Void> executeSaveGameTime(@Body HashMap<String, Float> map);
 
     @POST ("/fetchQuestions")
     Call<Question[]> fetchQuestions();
