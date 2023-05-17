@@ -86,7 +86,7 @@ public class PopupDialogScreen implements Screen {
                     if(correct){
                         dialog.remove();
                         underlyingFinal.popUp= false;
-                        Gdx.input.setInputProcessor(stage);
+                        Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                         AssetLoader.rightsound.play();
                         if(!underlyingFinal.currentQuiz.empty()) {
                             underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
@@ -141,6 +141,7 @@ public class PopupDialogScreen implements Screen {
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                     if(!underlyingFinal.currentQuiz.empty()) {
                         underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+
                     }
 
                 }else{
