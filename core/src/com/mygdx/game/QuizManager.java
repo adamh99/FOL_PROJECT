@@ -58,29 +58,35 @@ public class QuizManager {
         //System.out.println("RESPONSE: "+response.body()[0].toString());
         return response.body();
     }
-    public void startQuiz(Question[] questions,GameScreen underlying,Stage stage){
+    public void startQuiz(Question[] questions,GameScreen underlying,Stage stage,String uniqueSubject){
         underlying.popUp = true;
-        for (int i = 0;i<questions.length;i++){
+        Question[] formatedQuestions = questionsBySubject(questions,uniqueSubject);
+
+        for (int i = 0;i<formatedQuestions.length;i++){
             //RECORRE LAS QUESTIONS
            // displayQuestionDialog(questions[i],underlying, PopupDialogScreen.EnumClass.Positions.CENTER,stage);
-            underlying.currentQuiz.add(questions[i]);
+            underlying.currentQuiz.add(formatedQuestions[i]);
         }
         underlying.currentPopUp = new PopupDialogScreen(underlying.currentQuiz.pop(),underlying,PopupDialogScreen.EnumClass.Positions.CENTER,stage);
     }
     public void quizzScreen(Question[] questions,GameScreen underlying,Stage stage){
         underlying.popUp = true;
 
-        underlying.currentPopUp = new PopupDialogScreen("QUIZZ",questions,underlying,PopupDialogScreen.EnumClass.Positions.TOP_RIGHT,stage);
+        underlying.currentPopUp = new PopupDialogScreen("QUIZZ",questions,underlying,PopupDialogScreen.EnumClass.Positions.CENTER,stage);
+
     }
 
-    public List<Question> questionsBySubject(Question[] questions,String subject){
+    public Question[] questionsBySubject(Question[] questions, String subject) {
         List<Question> subjectQuestions = new ArrayList<>();
         for (Question question : questions) {
-            if (question.getSubject().equals(subject)){
+            if (question.getSubject().equals(subject)) {
                 subjectQuestions.add(question);
             }
         }
-        return subjectQuestions;
+
+        Question[] resultArray = new Question[subjectQuestions.size()];
+        subjectQuestions.toArray(resultArray);
+        return resultArray;
     }
     public void answerQuestion(){
 

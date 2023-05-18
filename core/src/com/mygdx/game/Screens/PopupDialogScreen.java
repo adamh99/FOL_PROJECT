@@ -5,22 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.GameScreen;
-import com.mygdx.game.Message;
 import com.mygdx.game.Question;
 import com.mygdx.game.Settings.AssetLoader;
 
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Stack;
+import java.util.Set;
 
 public class PopupDialogScreen implements Screen {
 
@@ -30,13 +27,14 @@ public class PopupDialogScreen implements Screen {
             TOP_RIGHT, TOP_LEFT, BOTTOM_RIGHT, BOTTOM_LEFT, CENTER
         }
     }
+    public Question[] questions;
     private Dialog dialog;
     private Stage stage;
     private Skin skin = AssetLoader.skin;
     private String message,title,selectedOption;
     String validOption ="";
     boolean correct = false;
-    private TextButton closeButton;
+    private List<TextButton> linkButtons;
     TextButton buttonA,buttonB,buttonC;
     GameScreen underlying;
     public final List<Vector2> VECTORS = new ArrayList<>();
@@ -175,38 +173,17 @@ public class PopupDialogScreen implements Screen {
 
     }
 
-    public PopupDialogScreen(String title, Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+    public PopupDialogScreen(String title, final Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
 
         //this.message = message;
+        this.questions = questions;
         this.underlying = underlying;
         this.stage=stage;
+        linkButtons = new ArrayList<>();
         Gdx.input.setInputProcessor(stage);
-        Stack<String> subjects = new Stack<>();
-        for(int i= 0; i<questions.length;i++){
-            subjects.push(questions[i].getSubject());
 
-            //SEPARA TODOS LOS SUBJECTS SINÓ MIRA CHATGPT
-        }
-        String[] uniqueStrings = new String[strings.length];
-        int index = 0;
+        final String[] uniqueSubjects = getUniqueSubjects(questions);
 
-        for (String str : strings) {
-            boolean isDuplicate = false;
-
-            // Check if the string already exists in the uniqueStrings array
-            for (int i = 0; i < index; i++) {
-                if (str.equals(uniqueStrings[i])) {
-                    isDuplicate = true;
-                    break;
-                }
-            }
-
-            // If it's not a duplicate, add it to the uniqueStrings array
-            if (!isDuplicate) {
-                uniqueStrings[index] = str;
-                index++;
-            }
-        }
 
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         VECTORS.add(new Vector2(width,height));
@@ -217,21 +194,11 @@ public class PopupDialogScreen implements Screen {
 
         // create and add the dialog to the stage
         dialog = new Dialog(title, skin);
+        for (String str : uniqueSubjects){
+            addSubject(str);
+        }
 
-        Label messageLabel = new Label(message, skin);
-        closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                dialog.remove();
-                underlying.popUp= false;
-                Gdx.input.setInputProcessor(underlying.myInputProcessor);
-            }
-        });
-
-        dialog.text(messageLabel);
         dialog.add();
-        dialog.button(closeButton, true);
 
         stage.addActor(dialog);
 
@@ -299,7 +266,42 @@ public class PopupDialogScreen implements Screen {
         underlying.popUp = false;
     }
 
-    public TextButton getCloseButton() {
-        return closeButton;
+    public static String[] getUniqueSubjects(Question[] array) {
+        String[] strings = new String[array.length];
+        for (int i = 0;i<array.length;i++){
+            strings[i] = array[i].getSubject();
+        }
+        /*
+        for (int i=0;i< strings.length;i++){
+            System.out.println("SUBJECTS "+strings[i]);
+        }*/
+
+        Set<String> uniqueStrings = new HashSet<>();
+        for (String str : strings) {
+            if (!uniqueStrings.contains(str)){
+                uniqueStrings.add(str);
+            }
+        }
+        /*
+        for (String str : uniqueStrings){
+            System.out.println("UNIQUE "+str);
+        }*/
+        return uniqueStrings.toArray(new String[0]);
+    }
+    public TextButton addSubject(final String uniqueSubject){
+        TextButton button = new TextButton(uniqueSubject,skin);
+        linkButtons.add(button);
+        for(TextButton t : linkButtons){
+            dialog.getContentTable().add(t);
+            dialog.getContentTable().row();
+            t.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
+                }
+            });
+        }
+
+        return button;
     }
 }

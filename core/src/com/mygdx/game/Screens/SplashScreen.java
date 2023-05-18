@@ -39,7 +39,7 @@ public class SplashScreen implements Screen {
         ;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(tiempo<5){
+        if(tiempo<1){
             float imageWidht= Gdx.graphics.getWidth()*0.5f;
             float imageHeight = Gdx.graphics.getHeight()*0.5f;
             batch_nuevo.begin();

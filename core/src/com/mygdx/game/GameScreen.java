@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 
 	boolean loading;
 	ModelInstance debug3dcursor;
-	QuizManager qmanager;
+	public QuizManager qmanager;
 	MyFolGame game;
 	public Stack<Question> currentQuiz;
 
