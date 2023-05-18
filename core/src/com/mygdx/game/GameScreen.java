@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.Screens.MyInputProcessor;
 import com.mygdx.game.Screens.PopupDialogScreen;
 
@@ -28,11 +29,24 @@ import com.mygdx.game.Screens.PopupDialogScreen;
 import java.awt.AWTException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Stack;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class GameScreen implements Screen {
+
+	public long startTime;
+
+
 	//features a test 3d world
 	ModelBatch modelBatch;
+
+	private String userName;
 
 	Stage stage;
 	public PerspectiveCamera cam;
@@ -56,6 +70,7 @@ public class GameScreen implements Screen {
 	public Stack<Question> currentQuiz;
 
 	public GameScreen(MyFolGame game) throws IOException, InterruptedException {
+		startTime = System.currentTimeMillis();
 		currentQuiz = new Stack<>();
 		modelBatch = new ModelBatch();
 		instances = new Array<ModelInstance>();
@@ -97,6 +112,11 @@ public class GameScreen implements Screen {
 
 		setLighting();
     }
+
+	private void setUserName(String userName){
+		this.userName=userName;
+
+	}
 	private void setLighting(){
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
@@ -207,6 +227,44 @@ public class GameScreen implements Screen {
 
 		loading = false;
 	}
+
+	public void saveGameTime(int gameTime,String userName){
+		Retrofit retrofit;
+		RetrofitInterface retrofitInterface;
+		String BASE_URL="http://localhost:3012";
+
+		retrofit=new Retrofit.Builder()
+				.baseUrl(BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+
+		retrofitInterface=retrofit.create(RetrofitInterface.class);
+
+		HashMap<String,String> map=new HashMap<>();
+
+
+
+
+		map.put("gameTime",String.valueOf(gameTime));
+		map.put("userName",userName);
+
+		Call<Void> call = retrofitInterface.executeSaveStats(map);
+
+		call.enqueue(new Callback<Void>() {
+			@Override
+			public void onResponse(Call<Void> call, Response<Void> response) {
+
+			}
+
+			@Override
+			public void onFailure(Call<Void> call, Throwable t) {
+
+			}
+		});
+
+
+	}
+
 	public boolean popUp = false;
 
 	public PopupDialogScreen currentPopUp = null;
