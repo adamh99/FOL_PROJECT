@@ -149,31 +149,18 @@ public class PopupDialogScreen implements Screen {
                 }
             }
         });
-
-        switch (positions) {
-            case TOP_RIGHT:i = 0;
-                break;
-            case BOTTOM_RIGHT:i = 1;
-                break;
-            case BOTTOM_LEFT:i = 2;
-                break;
-            case TOP_LEFT:i = 3;
-                break;
-            case CENTER:
-                break;
-        }
-        if(i!=null){
-            dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
-
-        }else{
-            dialog.show(stage);
-        }
+        positionDialog(positions);
 
         stage.addActor(dialog);
 
     }
 
     public PopupDialogScreen(String title, final Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+        //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
+        VECTORS.add(new Vector2(width,height));
+        VECTORS.add(new Vector2(width,height*0.001f));
+        VECTORS.add(new Vector2(width*0.001f,height*0.01f));
+        VECTORS.add(new Vector2(width*0.001f,height));
 
         //this.message = message;
         this.questions = questions;
@@ -185,12 +172,7 @@ public class PopupDialogScreen implements Screen {
         final String[] uniqueSubjects = getUniqueSubjects(questions);
 
 
-        //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
-        VECTORS.add(new Vector2(width,height));
-        VECTORS.add(new Vector2(width,height*0.001f));
-        VECTORS.add(new Vector2(width*0.001f,height*0.01f));
-        VECTORS.add(new Vector2(width*0.001f,height));
-        Integer i = null;
+
 
         // create and add the dialog to the stage
         dialog = new Dialog(title, skin);
@@ -199,27 +181,8 @@ public class PopupDialogScreen implements Screen {
         }
 
         dialog.add();
-
+        positionDialog(positions);
         stage.addActor(dialog);
-
-        switch (positions) {
-            case TOP_RIGHT:i = 0;
-                break;
-            case BOTTOM_RIGHT:i = 1;
-                break;
-            case BOTTOM_LEFT:i = 2;
-                break;
-            case TOP_LEFT:i = 3;
-                break;
-            case CENTER:
-                break;
-        }
-        if(i==null){
-                dialog.show(stage);
-        }else{
-            dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
-        }
-        //dialog.setSize(300, 300);
 
 
     }
@@ -297,11 +260,72 @@ public class PopupDialogScreen implements Screen {
             t.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
+                    if (confirmationScreen()){
+
+                        underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
+                    }
                 }
             });
         }
 
         return button;
+    }
+    Dialog confirmationDialog;
+    boolean yesButtonClicked;
+
+    public boolean confirmationScreen(){
+        stage = new Stage();
+        confirmationDialog = new Dialog("Confirmation", skin);
+        TextButton yesButton = new TextButton("Yes",skin);
+        TextButton noButton = new TextButton("No",skin);
+        yesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                yesButtonClicked = true;
+            }
+        });
+        noButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                confirmationDialog.hide();
+            }
+        });
+        // Create the confirmation dialog
+        confirmationDialog.text("Are you sure you want to proceed?");
+
+        confirmationDialog.getContentTable().add(yesButton);
+        confirmationDialog.getContentTable().add(noButton);
+
+        confirmationDialog.show(stage);
+        if (yesButtonClicked){
+            System.out.println("TRUE");
+            return true;
+        }else {
+            System.out.println("FALSE");
+            return false;
+        }
+    }
+    public void positionDialog(EnumClass.Positions positions){
+
+        Integer i = null;
+
+        switch (positions) {
+            case TOP_RIGHT:i = 0;
+                break;
+            case BOTTOM_RIGHT:i = 1;
+                break;
+            case BOTTOM_LEFT:i = 2;
+                break;
+            case TOP_LEFT:i = 3;
+                break;
+            case CENTER:
+                break;
+        }
+        if(i==null){
+            dialog.show(stage);
+        }else{
+            dialog.setPosition(VECTORS.get(i).x,VECTORS.get(i).y);
+        }
+        //dialog.setSize(300, 300);
     }
 }
