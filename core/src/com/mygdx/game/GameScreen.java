@@ -81,6 +81,7 @@ public class GameScreen implements Screen {
 
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
+
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
 		qmanager.quizzScreen(questions,this,stage);

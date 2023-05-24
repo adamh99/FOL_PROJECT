@@ -260,10 +260,7 @@ public class PopupDialogScreen implements Screen {
             t.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (confirmationScreen()){
-
-                        underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
-                    }
+                    confirmationScreen(uniqueSubject);
                 }
             });
         }
@@ -273,15 +270,14 @@ public class PopupDialogScreen implements Screen {
     Dialog confirmationDialog;
     boolean yesButtonClicked;
 
-    public boolean confirmationScreen(){
-        stage = new Stage();
+    public boolean confirmationScreen(final String uniqueSubject){
         confirmationDialog = new Dialog("Confirmation", skin);
         TextButton yesButton = new TextButton("Yes",skin);
         TextButton noButton = new TextButton("No",skin);
         yesButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                yesButtonClicked = true;
+                underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
             }
         });
         noButton.addListener(new ClickListener() {
