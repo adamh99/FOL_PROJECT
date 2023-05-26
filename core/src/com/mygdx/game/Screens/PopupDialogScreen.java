@@ -30,6 +30,8 @@ public class PopupDialogScreen implements Screen {
     public Question[] questions;
     private Dialog dialog;
     private Stage stage;
+
+    private int experiencePoints;
     private Skin skin = AssetLoader.skin;
     private String message,title,selectedOption;
     String validOption ="";
@@ -41,6 +43,8 @@ public class PopupDialogScreen implements Screen {
     float height = Gdx.graphics.getHeight();
     float width = Gdx.graphics.getWidth();
     public PopupDialogScreen(Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+
+
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
         System.out.println("POPUPDIALOGSCREEN "+question.toString());
@@ -88,11 +92,13 @@ public class PopupDialogScreen implements Screen {
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                         AssetLoader.rightsound.play();
+                        underlyingFinal.addExperiencePoints(10);
                         if(!underlyingFinal.currentQuiz.empty()) {
                             underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
                         }
                     }else{
                         AssetLoader.wrongsound.play();
+                        underlyingFinal.addExperiencePoints(-5);
 
                     }
                 }
@@ -114,11 +120,13 @@ public class PopupDialogScreen implements Screen {
                         AssetLoader.rightsound.play();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    underlyingFinal.addExperiencePoints(10);
                     if(!underlyingFinal.currentQuiz.empty()) {
                         underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
                     }
                 }else{
                     AssetLoader.wrongsound.play();
+                    underlyingFinal.addExperiencePoints(-5);
                 }
             }
 
@@ -139,6 +147,7 @@ public class PopupDialogScreen implements Screen {
                     AssetLoader.rightsound.play();
                     underlyingFinal.popUp= false;
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
+                    underlyingFinal.addExperiencePoints(10);
                     if(!underlyingFinal.currentQuiz.empty()) {
                         underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
 
@@ -146,6 +155,7 @@ public class PopupDialogScreen implements Screen {
 
                 }else{
                     AssetLoader.wrongsound.play();
+                    underlyingFinal.addExperiencePoints(-5);
                 }
             }
         });
@@ -173,7 +183,7 @@ public class PopupDialogScreen implements Screen {
 
     }
 
-    public PopupDialogScreen(String title, final Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+    public PopupDialogScreen(String title, final Question[] questions, final GameScreen underlying, EnumClass.Positions positions, final Stage stage, final int experiencePoints) {
 
         //this.message = message;
         this.questions = questions;

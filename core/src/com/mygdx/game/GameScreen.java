@@ -42,12 +42,15 @@ public class GameScreen implements Screen {
 
 	public long startTime;
 
+	private  ExperienceBar experienceBar;
 
 	//features a test 3d world
 	ModelBatch modelBatch;
 
 	private String userName;
 
+
+	private int experiencePoints;
 	Stage stage;
 	public PerspectiveCamera cam;
 	public MyInputProcessor myInputProcessor;
@@ -77,13 +80,15 @@ public class GameScreen implements Screen {
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		myInputProcessor = new MyInputProcessor(cam, this);
+		experienceBar = new ExperienceBar(50,50,200,20);
 
 
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(myInputProcessor);
-		qmanager.quizzScreen(questions,this,stage);
+		stage.addActor(experienceBar);
+		qmanager.quizzScreen(questions,this,stage,experiencePoints);
 		//qmanager.startQuiz(questions,this,stage);
 
 		//displayQuestionDialog(questions, PopupDialogScreen.EnumClass.Positions.CENTER);
@@ -101,6 +106,7 @@ public class GameScreen implements Screen {
 			e.printStackTrace();
 		}
 
+
 		Gdx.input.setCursorCatched(false);
 		
 		//ui
@@ -113,9 +119,14 @@ public class GameScreen implements Screen {
 		setLighting();
     }
 
+
+
 	private void setUserName(String userName){
 		this.userName=userName;
 
+	}
+	public void addExperiencePoints(int points) {
+		experienceBar.setExperiencePoints(experiencePoints);
 	}
 	private void setLighting(){
 		environment = new Environment();
