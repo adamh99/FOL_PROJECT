@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.game.GameScreen;
 
 public class MyInputProcessor implements InputProcessor {
@@ -17,10 +18,12 @@ public class MyInputProcessor implements InputProcessor {
     private float startX, startY;
     private boolean isDragging;
     GameScreen gameScreen;
+    Image menuButton;
 
     public MyInputProcessor(PerspectiveCamera camera, GameScreen gameScreen) {
         this.camera = camera;
         this.gameScreen = gameScreen;
+        menuButton = gameScreen.menuButton;
     }
 
     @Override
@@ -88,9 +91,25 @@ public class MyInputProcessor implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         isDragging = false;
+        if(isMenuButtonClicked(screenX,screenY)){
+            if(gameScreen.isMenuVisible){
+                gameScreen.slidePanelOut();
+            }else gameScreen.slidePanelIn();
+        }
+
+
+
         return true;
     }
 
+    boolean isMenuButtonClicked(float screenX, float screenY){
+        boolean clicked = false;
+        if (screenX >= menuButton.getX() && screenX <= menuButton.getX() + menuButton.getWidth() &&
+                Gdx.graphics.getHeight() - screenY >= menuButton.getY() && Gdx.graphics.getHeight() - screenY <= menuButton.getY() + menuButton.getHeight()) {
+            clicked = true;
+        }
+        return clicked;
+    }
 
 
 }

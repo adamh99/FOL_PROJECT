@@ -140,7 +140,7 @@ public class PopupDialogScreen implements Screen {
                     underlyingFinal.popUp= false;
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                     if(!underlyingFinal.currentQuiz.empty()) {
-                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                        new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
 
                     }
 
@@ -196,8 +196,8 @@ public class PopupDialogScreen implements Screen {
     public void render(float delta) {
        //pintar toda la pantalla de un color Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(delta);
-        stage.draw();
+        //stage.act(delta);
+        //stage.draw();
 
 
 
@@ -278,12 +278,14 @@ public class PopupDialogScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 underlying.qmanager.startQuiz(questions,underlying,stage,uniqueSubject);
+                dialog.remove();
+                confirmationDialog.remove();
             }
         });
         noButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                confirmationDialog.hide();
+                confirmationDialog.remove();
             }
         });
         // Create the confirmation dialog

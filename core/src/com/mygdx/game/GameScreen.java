@@ -6,8 +6,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -19,6 +21,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Api.RetrofitInterface;
@@ -45,6 +49,7 @@ public class GameScreen implements Screen {
 
 	//features a test 3d world
 	ModelBatch modelBatch;
+
 
 	private String userName;
 
@@ -73,16 +78,20 @@ public class GameScreen implements Screen {
 		startTime = System.currentTimeMillis();
 		currentQuiz = new Stack<>();
 		modelBatch = new ModelBatch();
+		stage=new Stage(new ScreenViewport());
+
 		instances = new Array<ModelInstance>();
 		this.game = game;
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		addSlidingMenu(stage);
 		myInputProcessor = new MyInputProcessor(cam, this);
 
 
 		qmanager = new QuizManager();
 		questions = qmanager.fetchQuestionsFromServer();
 
-		stage=new Stage(new ScreenViewport());
+
+
 		Gdx.input.setInputProcessor(myInputProcessor);
 		qmanager.quizzScreen(questions,this,stage);
 		//qmanager.startQuiz(questions,this,stage);
@@ -229,6 +238,62 @@ public class GameScreen implements Screen {
 		loading = false;
 	}
 
+	public Image menuButton;
+	Image panel;
+	public boolean isMenuVisible = false;
+
+	public void addSlidingMenu(Stage stage) {
+
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
+		float buttonSize = 100;
+		float paddingPercentage = 0.05f;
+		// Calculate padding values based on screen size
+		float paddingX = screenWidth * paddingPercentage;
+		float paddingY = screenHeight * paddingPercentage;
+
+		// Calculate the button position
+		float buttonX = screenWidth - buttonSize - paddingX;
+		float buttonY = screenHeight - buttonSize - paddingY;
+
+		// Load the button texture
+		Texture buttonTexture = new Texture(Gdx.files.internal("badlogic.jpg")); // Assuming the image is named badlogic.jpg
+
+		// Create the button image
+		TextureRegion buttonRegion = new TextureRegion(buttonTexture);
+		menuButton = new Image(buttonRegion);
+
+		// Set the button position and size
+		menuButton.setSize(buttonSize, buttonSize);
+		menuButton.setPosition(buttonX, buttonY);
+
+
+		// Create the sliding panel
+		float panelWidth = screenWidth * 0.4f;
+		float panelHeight = screenHeight;
+		float panelX = screenWidth;
+		float panelY = 0;
+
+		panel = new Image(buttonTexture);
+		panel.setSize(panelWidth, panelHeight);
+		panel.setPosition(panelX, panelY);
+		panel.setColor(0, 0, 0, 0.8f); // Black with 80% opacity
+
+		stage.addActor(panel);
+		stage.addActor(menuButton);
+	}
+	public void slidePanelIn() {
+		float targetX = Gdx.graphics.getWidth() - panel.getWidth();
+		panel.addAction(Actions.moveTo(targetX, 0, 0.3f));
+		isMenuVisible = true;
+	}
+	public void slidePanelOut() {
+		float targetX = Gdx.graphics.getWidth();
+		panel.addAction(Actions.moveTo(targetX, 0, 0.3f));
+		isMenuVisible = false;
+
+	}
+
 	public void saveGameTime(int gameTime,String userName){
 		Retrofit retrofit;
 		RetrofitInterface retrofitInterface;
@@ -309,9 +374,12 @@ public class GameScreen implements Screen {
 		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
 		sb.end();
 
-		if(popUp){
+		/*if(popUp){
 			currentPopUp.render(delta);
-		}
+		}*/
+		stage.draw();
+		stage.act();
+
 		if(!loading){
 
 			updateTreeCamera();
