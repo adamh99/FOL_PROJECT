@@ -1,0 +1,5 @@
+newmtl red-whitebricks
+map_Kd white-brick(1).jpg
+Kd 1 0.5689324 0
+d 0
+
