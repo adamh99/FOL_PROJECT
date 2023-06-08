@@ -41,7 +41,9 @@ public class PopupDialogScreen implements Screen {
     public final List<Vector2> VECTORS = new ArrayList<>();
     float height = Gdx.graphics.getHeight();
     float width = Gdx.graphics.getWidth();
-    public PopupDialogScreen(Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage) {
+
+    QuizManager quizManager;
+    public PopupDialogScreen(final Question question, GameScreen underlying, EnumClass.Positions positions, final Stage stage, final QuizManager quizManager) {
         final GameScreen underlyingFinal = underlying;
         this.selectedOption = "";
         System.out.println("POPUPDIALOGSCREEN "+question.toString());
@@ -52,6 +54,7 @@ public class PopupDialogScreen implements Screen {
         this.stage=stage;
         this.validOption = question.getValidOption();
         Gdx.input.setInputProcessor(stage);
+        this.quizManager= quizManager;
         //0=TOP RIGHT 1=BOTTOM RIGHT 2=BOTTOM LEFT 3=TOP LEFT
         Integer i = null;
         VECTORS.add(new Vector2(width,height));
@@ -80,19 +83,17 @@ public class PopupDialogScreen implements Screen {
                 selectedOption= buttonA.getText().toString();
                 correct = selectedOption.equals(validOption);
                     if(correct){
-                        QuizManager quizManager= new QuizManager();
-                        int totalPoints= quizManager.getTotalPoints();
-                        int score= quizManager.getScore();
-                        totalPoints+=10;
-                        score++;
+
+                        quizManager.answerQuestion(true);
                         dialog.remove();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                         AssetLoader.rightsound.play();
                         if(!underlyingFinal.currentQuiz.empty()) {
-                            underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                            underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage,quizManager);
                         }
                     }else{
+                        quizManager.answerQuestion(false);
                         AssetLoader.wrongsound.play();
 
                     }
@@ -111,17 +112,14 @@ public class PopupDialogScreen implements Screen {
                 */
                 correct = selectedOption.equals(validOption);
                 if(correct){
-                    QuizManager quizManager= new QuizManager();
-                    int totalPoints= quizManager.getTotalPoints();
-                    int score= quizManager.getScore();
-                    totalPoints+=10;
-                    score++;
+
+                    quizManager.answerQuestion(true);
                         dialog.remove();
                         AssetLoader.rightsound.play();
                         underlyingFinal.popUp= false;
                         Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                     if(!underlyingFinal.currentQuiz.empty()) {
-                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage,quizManager);
                     }
                 }else{
                     AssetLoader.wrongsound.play();
@@ -141,17 +139,14 @@ public class PopupDialogScreen implements Screen {
                 */
                 correct = selectedOption.equals(validOption);
                 if(correct){
-                    QuizManager quizManager= new QuizManager();
-                    int totalPoints= quizManager.getTotalPoints();
-                    int score= quizManager.getScore();
-                    totalPoints+=10;
-                    score++;
+
+                    quizManager.answerQuestion(true);
                     dialog.remove();
                     AssetLoader.rightsound.play();
                     underlyingFinal.popUp= false;
                     Gdx.input.setInputProcessor(underlyingFinal.myInputProcessor);
                     if(!underlyingFinal.currentQuiz.empty()) {
-                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage);
+                        underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage,quizManager);
 
                     }
 

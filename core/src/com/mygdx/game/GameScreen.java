@@ -309,14 +309,6 @@ public class GameScreen implements Screen {
 		}
 		modelBatch.begin(cam);
 		modelBatch.render(instances,environment);
-
-		modelBatch.end();
-
-		sb.begin();
-		debugFont.draw(sb, "FPS="+Gdx.graphics.getFramesPerSecond()+" camxyz="
-		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
-		sb.end();
-
 		int totalPoints = qmanager.getTotalPoints();
 		int score = qmanager.getScore();
 		int screenWidth = Gdx.graphics.getWidth();
@@ -330,14 +322,21 @@ public class GameScreen implements Screen {
 		float levelX = screenWidth / 2 - levelLayout.width / 2;
 		float levelY = 30;
 
+		modelBatch.end();
+
+		sb.begin();
+		debugFont.draw(sb, "FPS="+Gdx.graphics.getFramesPerSecond()+" camxyz="
+		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
+		sb.end();
+
+		batch.begin();
+		font.draw(batch, "Puntos: " + score, scoreX, scoreY); // Reemplaza "x" e "y" con las coordenadas de posición deseadas
+		font.draw(batch, "Puntuación total: " + totalPoints, levelX, levelY); // Reemplaza "x" e "y" con las coordenadas de posición deseadas
+		batch.end();
+
 		if(popUp){
 			currentPopUp.render(delta);
 
-
-			sb.begin();
-			fonti.draw(sb, scoreLayout, scoreX, scoreY);
-			fonti.draw(sb, levelLayout, levelX, levelY);
-			sb.end();
 
 		}
 		if(!loading){

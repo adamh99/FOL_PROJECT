@@ -40,8 +40,10 @@ public class GameOverScreen implements Screen {
     MyFolGame Game;
     GameScreen gameScreen;
 
+    private int score;
+    private  int totalPoints;
 
-    public GameOverScreen(MyFolGame Game) {
+    public GameOverScreen(MyFolGame Game, int score, int totalPoints) {
         atlas = new TextureAtlas("shadeui/quantum-horizon/skin/quantum-horizon-ui.atlas");
         skin = new Skin(Gdx.files.internal("shadeui/quantum-horizon/skin/quantum-horizon-ui.json"), atlas);
 
@@ -57,7 +59,7 @@ public class GameOverScreen implements Screen {
         stage = new Stage(viewport, batch);
         thisScreen = this;
         this.Game = Game;
-
+         this.score=score;
 
     }
 
