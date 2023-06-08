@@ -25,18 +25,22 @@ public class QuizManager {
     private PopupDialogScreen popupDialogScreen;
     private int totalPoints;
     private int score;
-    QuizManager quizManager;
-    GameOverScreen gameOverScreen;
-    MyFolGame Game;
+    private QuizManager quizManager;
+    private GameOverScreen gameOverScreen;
+    private MyFolGame game;
 
-    private int consecutivefails;
+    private int consecutiveFails;
+    private boolean isTopicLocked;
+    private boolean isTopic1Completed;
 
     public QuizManager() {
         questions = new ArrayList<>();
-        score=0;
-        totalPoints=0;
+        score = 0;
+        totalPoints = 0;
         quizManager = this;
-        consecutivefails=0;
+        consecutiveFails = 0;
+        isTopicLocked = false;
+        isTopic1Completed = false;
     }
 
     public int getTotalPoints() {
@@ -45,6 +49,14 @@ public class QuizManager {
 
     public int getScore() {
         return score;
+    }
+
+    public boolean isTopicLocked() {
+        return isTopicLocked;
+    }
+
+    public boolean isTopic1Completed() {
+        return isTopic1Completed;
     }
 
     public Question[] fetchQuestionsFromServer() throws IOException, InterruptedException {
@@ -100,29 +112,30 @@ public class QuizManager {
         subjectQuestions.toArray(resultArray);
         return resultArray;
     }
-/*android*/
+
     public void answerQuestion(Boolean correct) {
         if (correct) {
             totalPoints += 10;
             score++;
-            consecutivefails = 0;
-        }else{
-            consecutivefails++;
-            if (consecutivefails>=2){
+            consecutiveFails = 0;
+        } else {
+            consecutiveFails++;
+            if (consecutiveFails >= 2) {
                 closeQuiz();
             }
         }
     }
 
     public void closeQuiz() {
-        GameOverScreen gameOverScreen =  new GameOverScreen(Game,getScore(),getTotalPoints());
-        ((Game) Gdx.app.getApplicationListener()).setScreen(gameOverScreen);
+        isTopicLocked = true;
+        if (score >= 5) {
+            isTopic1Completed = true;
+        }
+        gameOverScreen = new GameOverScreen(game, getTotalPoints(), score, isTopic1Completed);
+        game.setScreen(gameOverScreen);
     }
 
-    public void displayQuestionDialog(Question q, GameScreen underlying, PopupDialogScreen.EnumClass.Positions positions, Stage stage) {
-        popupDialogScreen = new PopupDialogScreen(q, underlying, positions.CENTER, stage,this);
-
-        underlying.popUp = true;
-        popupDialogScreen.show();
+    public void setGame(MyFolGame game) {
+        this.game = game;
     }
 }

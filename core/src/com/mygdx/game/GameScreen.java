@@ -286,71 +286,92 @@ public class GameScreen implements Screen {
 	Vector3 tmp = new Vector3();
 
 	@Override
-	public void render (float delta) {
+	public void render(float delta) {
 		this.delta = delta;
 		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl20.glEnable(GL20.GL_DEPTH_TEST);
 
-
-		//color azul para el cielo
-		Gdx.gl.glClearColor(150f, 10f, 2f,0.5f);
-		if(CamControl.android_forward){tmp.set(cam.direction).nor().scl(delta * 1);
-		cam.position.add(tmp);}
+		Gdx.gl.glClearColor(150f, 10f, 2f, 0.5f); // Color azul para el cielo
+		if (CamControl.android_forward) {
+			tmp.set(cam.direction).nor().scl(delta * 1);
+			cam.position.add(tmp);
+		}
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT |
-				(Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+				(Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
 		if (loading && assets.update())
 			loadInstances();
+
 		try {
 			camController.update();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		modelBatch.begin(cam);
-		modelBatch.render(instances,environment);
+		modelBatch.render(instances, environment);
+		modelBatch.end();
+
 		int totalPoints = qmanager.getTotalPoints();
 		int score = qmanager.getScore();
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
-
-		GlyphLayout scoreLayout = new GlyphLayout(fonti, "Puntuación: " + score);
-		float scoreX = screenWidth / 2 - scoreLayout.width / 2;
-		float scoreY = 50;
-
-		GlyphLayout levelLayout = new GlyphLayout(fonti, "Nivel: " + totalPoints);
-		float levelX = screenWidth / 2 - levelLayout.width / 2;
-		float levelY = 30;
-
-		modelBatch.end();
-
-		sb.begin();
-		debugFont.draw(sb, "FPS="+Gdx.graphics.getFramesPerSecond()+" camxyz="
-		+cam.position, camController.screenWidth/2, (float) (camController.screenHeight*0.97));
-		sb.end();
+		String level= calculateLevel(totalPoints);
 
 		batch.begin();
-		font.draw(batch, "Puntos: " + score, scoreX, scoreY); // Reemplaza "x" e "y" con las coordenadas de posición deseadas
-		font.draw(batch, "Puntuación total: " + totalPoints, levelX, levelY); // Reemplaza "x" e "y" con las coordenadas de posición deseadas
+
+		GlyphLayout scoreLayout = new GlyphLayout(fonti, "LEVEL: " + score);
+		float scoreX = 10; // Posición en el borde izquierdo
+		float scoreY = screenHeight - 10; // Posición en la parte superior
+
+		GlyphLayout levelLayout = new GlyphLayout(fonti, "POINTS: " + totalPoints);
+		float levelX = 10; // Posición en el borde izquierdo
+		float levelY = screenHeight - 40; // Posición en la parte superior
+
+		// Calcular la posición del texto del nivel
+		GlyphLayout nivelLayout = new GlyphLayout(font, "GRADO DE CONOCIMIENTO: " + level);
+		float nivelWidth = nivelLayout.width;
+		float nivelHeight = nivelLayout.height;
+		float nivelx = screenWidth - nivelWidth - 10; // Posición en el borde derecho
+		float nively = screenHeight - nivelHeight - 10; // Posición en la parte superior
+
+
+		// Dibujar el texto del nivel
+
+
+		font.setColor(Color.BLACK);
+		font.draw(batch, "Puntos: " + score, scoreX, scoreY);
+		font.draw(batch, "Puntuación total: " + totalPoints, levelX, levelY);
+		font.draw(batch, "Nivel: " + level, nivelx, nively);
+
+		if (totalPoints >= 20) {
+			GlyphLayout congratsLayout = new GlyphLayout(fonti, "¡Felicidades por superar los 20 puntos!");
+			float congratsX = screenWidth / 2 - congratsLayout.width / 2;
+			float congratsY = screenHeight / 2 + congratsLayout.height / 2;
+			font.draw(batch, "¡Felicidades por superar los 20 puntos!", congratsX, congratsY);
+
+		}
+
 		batch.end();
 
-		if(popUp){
+		sb.begin();
+		debugFont.draw(sb, "FPS=" + Gdx.graphics.getFramesPerSecond() + " camxyz=" + cam.position, camController.screenWidth / 2, (float) (camController.screenHeight * 0.97));
+		sb.end();
+
+		if (popUp) {
 			currentPopUp.render(delta);
-
-
 		}
-		if(!loading){
 
+		if (!loading) {
 			updateTreeCamera();
 		}
-
-
 	}
-	private String calculateLevel(int score) {
 
-		if (score < 10) {
+	private String calculateLevel(int totalPoints) {
+
+		if ( totalPoints< 10) {
 			return "Novato";
-		} else if (score < 20) {
+		} else if (totalPoints < 20) {
 			return "Intermedio";
 		} else {
 			return "Experto";

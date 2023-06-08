@@ -3,8 +3,6 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,7 +22,6 @@ import com.mygdx.game.QuizManager;
 
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 
 public class GameOverScreen implements Screen {
@@ -43,7 +40,7 @@ public class GameOverScreen implements Screen {
     private int score;
     private  int totalPoints;
 
-    public GameOverScreen(MyFolGame Game, int score, int totalPoints) {
+    public GameOverScreen(MyFolGame Game, int score, int totalPoints, boolean isTopic1Completed) {
         atlas = new TextureAtlas("shadeui/quantum-horizon/skin/quantum-horizon-ui.atlas");
         skin = new Skin(Gdx.files.internal("shadeui/quantum-horizon/skin/quantum-horizon-ui.json"), atlas);
 
