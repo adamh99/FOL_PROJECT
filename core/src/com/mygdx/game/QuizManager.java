@@ -100,7 +100,7 @@ public class QuizManager {
         subjectQuestions.toArray(resultArray);
         return resultArray;
     }
-
+/*android*/
     public void answerQuestion(Boolean correct) {
         if (correct) {
             totalPoints += 10;
