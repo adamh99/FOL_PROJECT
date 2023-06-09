@@ -122,6 +122,7 @@ public class PopupDialogScreen implements Screen {
                         underlyingFinal.currentPopUp = new PopupDialogScreen(underlyingFinal.currentQuiz.pop(), underlyingFinal, PopupDialogScreen.EnumClass.Positions.CENTER, stage,quizManager);
                     }
                 }else{
+                    quizManager.answerQuestion(false);
                     AssetLoader.wrongsound.play();
                 }
             }
@@ -151,6 +152,7 @@ public class PopupDialogScreen implements Screen {
                     }
 
                 }else{
+                    quizManager.answerQuestion(false);
                     AssetLoader.wrongsound.play();
                 }
             }

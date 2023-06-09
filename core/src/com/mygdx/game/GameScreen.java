@@ -7,10 +7,12 @@ import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -26,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.Screens.MyInputProcessor;
 import com.mygdx.game.Screens.PopupDialogScreen;
+import com.mygdx.game.Screens.Sidebar;
 
 
 import java.awt.AWTException;
@@ -72,7 +75,7 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	MyFolGame game;
 	public Stack<Question> currentQuiz;
-
+	private Sidebar sidebar;
 	public GameScreen(MyFolGame game, QuizManager quizManager) throws IOException, InterruptedException {
 		font = new BitmapFont();
 		startTime = System.currentTimeMillis();
@@ -86,6 +89,12 @@ public class GameScreen implements Screen {
 
 		batch= new SpriteBatch();
 
+
+		Texture sidebarBackground = new Texture("grey.jpg");
+
+		sidebar = new Sidebar(sidebarBackground, font, new String[]{"Option 1", "Option 2", "Option 3"},
+				Gdx.graphics.getWidth() - 200, 0, 200, Gdx.graphics.getHeight(), batch);
+		sidebar.setExpanded(true);  // Establecer la barra lateral como expandida inicialmente
 		qmanager=quizManager;
 		questions = qmanager.fetchQuestionsFromServer();
 		stage=new Stage(new ScreenViewport());
@@ -117,7 +126,7 @@ public class GameScreen implements Screen {
 
 		debugFont.setColor(1,0,0, 1);
 		sb = new SpriteBatch ();
-
+		stage.addActor(sidebar);
 		setLighting();
     }
 
@@ -236,6 +245,43 @@ public class GameScreen implements Screen {
 		loading = false;
 	}
 
+	private void crearNuevaPlanta() {
+		// Código para crear una nueva planta
+		// Aquí debes incluir la lógica para crear y agregar una nueva planta a la escena
+		float MAX_HEIGHT=100.0f;
+		if (instances.size > 0) {
+			ModelInstance ultimaPlanta = instances.peek();
+			float lastY = ultimaPlanta.transform.getTranslation(new Vector3()).y;
+			ModelInstance nuevaPlanta = null;
+
+			if (lastY + getFloorHeight() < MAX_HEIGHT) {
+				nuevaPlanta = new ModelInstance(middleFloor);
+				nuevaPlanta.transform = new Matrix4(new Vector3(0, lastY + getFloorHeight(), 0), new Quaternion(), new Vector3(SCALE, SCALE, SCALE));
+			} else {
+				// La altura máxima se ha alcanzado, no se puede crear una nueva planta
+				return;
+			}
+
+			// Configurar la apariencia de la nueva planta (opcional)
+			Color[] colors = new Color[]{
+					new Color(0.69f, 0.48f, 0.38f, 1),  // Earthy brown
+					new Color(0.9f, 0.9f, 0.9f, 1),    // Light gray
+					new Color(0.63f, 0.77f, 0.8f, 1),  // Light blue
+					new Color(0.58f, 0.73f, 0.43f, 1), // Olive green
+					new Color(0.9f, 0.63f, 0.56f, 1),  // Coral
+					new Color(0.47f, 0.45f, 0.48f, 1)  // Charcoal gray
+			};
+			int colorIndex = instances.size % colors.length;
+
+			// Cambiar el color de la nueva planta (opcional)
+			for (Material material : nuevaPlanta.materials) {
+				material.set(new ColorAttribute(ColorAttribute.Diffuse, colors[colorIndex]));
+			}
+
+			// Agregar la nueva planta a la lista de instancias
+			instances.add(nuevaPlanta);
+		}
+	}
 	public void saveGameTime(int gameTime,String userName){
 		Retrofit retrofit;
 		RetrofitInterface retrofitInterface;
@@ -317,7 +363,6 @@ public class GameScreen implements Screen {
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 		String level= calculateLevel(totalPoints);
-
 		batch.begin();
 
 		GlyphLayout scoreLayout = new GlyphLayout(fonti, "LEVEL: " + score);
@@ -328,28 +373,23 @@ public class GameScreen implements Screen {
 		float levelX = 10; // Posición en el borde izquierdo
 		float levelY = screenHeight - 40; // Posición en la parte superior
 
-		// Calcular la posición del texto del nivel
+// Calcular la posición del texto del nivel
 		GlyphLayout nivelLayout = new GlyphLayout(font, "GRADO DE CONOCIMIENTO: " + level);
 		float nivelWidth = nivelLayout.width;
 		float nivelHeight = nivelLayout.height;
 		float nivelx = screenWidth - nivelWidth - 10; // Posición en el borde derecho
 		float nively = screenHeight - nivelHeight - 10; // Posición en la parte superior
 
-
-		// Dibujar el texto del nivel
-
+// Dibujar la barra lateral
+		sidebar.draw(batch, 1.0f);
 
 		font.setColor(Color.BLACK);
 		font.draw(batch, "Puntos: " + score, scoreX, scoreY);
 		font.draw(batch, "Puntuación total: " + totalPoints, levelX, levelY);
 		font.draw(batch, "Nivel: " + level, nivelx, nively);
 
-		if (totalPoints >= 20) {
-			GlyphLayout congratsLayout = new GlyphLayout(fonti, "¡Felicidades por superar los 20 puntos!");
-			float congratsX = screenWidth / 2 - congratsLayout.width / 2;
-			float congratsY = screenHeight / 2 + congratsLayout.height / 2;
-			font.draw(batch, "¡Felicidades por superar los 20 puntos!", congratsX, congratsY);
-
+		if (totalPoints >= 10) {
+			crearNuevaPlanta();
 		}
 
 		batch.end();

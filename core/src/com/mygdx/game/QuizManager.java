@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.Api.RetrofitInterface;
 import com.mygdx.game.Screens.GameOverScreen;
@@ -120,6 +121,7 @@ public class QuizManager {
             consecutiveFails = 0;
         } else {
             consecutiveFails++;
+            totalPoints -=5;
             if (consecutiveFails >= 2) {
                 closeQuiz();
             }
@@ -131,8 +133,6 @@ public class QuizManager {
         if (score >= 5) {
             isTopic1Completed = true;
         }
-        gameOverScreen = new GameOverScreen(game, getTotalPoints(), score, isTopic1Completed);
-        game.setScreen(gameOverScreen);
     }
 
     public void setGame(MyFolGame game) {
